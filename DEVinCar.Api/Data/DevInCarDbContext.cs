@@ -1,7 +1,6 @@
 using DEVinCar.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace DEVinCar.Api.Data;
 
 public class DevInCarDbContext : DbContext
