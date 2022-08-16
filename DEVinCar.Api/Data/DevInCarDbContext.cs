@@ -1,3 +1,4 @@
+using DEVinCar.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DEVinCar.Api.Data;
@@ -12,6 +13,8 @@ public class DevInCarDbContext : DbContext
     }
 
     //public DbSet<XYZ> XYZs { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Car> Cars { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -43,5 +46,42 @@ public class DevInCarDbContext : DbContext
         //             ...
         //         });
         // });
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.ToTable("Users");
+            entity.HasKey(u => u.Id);
+            entity
+                .Property(u => u.Email)
+                .HasMaxLength(150)
+                .IsRequired();
+
+            entity
+                .Property(u => u.Password)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            entity
+                .Property(u => u.Name)
+                .HasMaxLength(255)
+                .IsRequired();
+
+            entity
+                .Property(u => u.BirthDate);
+        });
+
+        modelBuilder.Entity<Car>(entity =>
+        {
+            entity.ToTable("Cars");
+            entity.HasKey(c => c.Id);
+
+            entity
+                .Property(c => c.Name)
+                .HasMaxLength(255)
+                .IsRequired();
+            
+            entity
+                .Property(c => c.SuggestedPrice);
+
+        });
     }
 }
