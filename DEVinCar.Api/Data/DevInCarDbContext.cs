@@ -15,6 +15,7 @@ public class DevInCarDbContext : DbContext
     //public DbSet<XYZ> XYZs { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Car> Cars { get; set; }
+    public DbSet<Sale> Sales { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -78,9 +79,29 @@ public class DevInCarDbContext : DbContext
                 .Property(c => c.Name)
                 .HasMaxLength(255)
                 .IsRequired();
-            
+
             entity
                 .Property(c => c.SuggestedPrice);
+
+        });
+
+        modelBuilder.Entity<Sale>(entity =>
+        {
+            entity.ToTable("Sales");
+            entity.HasKey(s => s.Id);
+            entity.Property(s => s.Id)
+                .HasColumnType("int");
+
+            entity.Property(s => s.BuyerId)
+                .HasColumnType("int")
+                .IsRequired();
+
+            entity.Property(s => s.SellerId)
+                .HasColumnType("int")
+                .IsRequired();
+
+            entity.Property(s => s.SaleDate)
+                .HasColumnType("timestamp");
 
         });
     }
