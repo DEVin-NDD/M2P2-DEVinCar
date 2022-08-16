@@ -16,6 +16,7 @@ public class DevInCarDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Car> Cars { get; set; }
     public DbSet<Sale> Sales { get; set; }
+    public DbSet<SaleCar> SaleCars { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -104,5 +105,27 @@ public class DevInCarDbContext : DbContext
                 .HasColumnType("timestamp");
 
         });
+
+        modelBuilder.Entity<SaleCar>(entity =>
+        {
+            entity.ToTable("SaleCars");
+            entity.HasKey(sc => sc.Id);
+            entity.Property(sc => sc.Id)
+                .HasColumnType("int");
+
+            entity.Property(s => s.SaleId)
+                .HasColumnType("int")
+                .IsRequired();
+
+            entity.Property(s => s.CarId)
+                .HasColumnType("int")
+                .IsRequired();
+
+            entity.Property(s => s.UnitPrice)
+                .HasColumnType("timestamp");
+
+
+        });
+
     }
 }
