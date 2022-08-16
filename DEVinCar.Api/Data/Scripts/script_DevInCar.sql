@@ -5,6 +5,6 @@ CREATE TABLE [dbo].[Addresses] (
     [Street]     VARCHAR (150) NULL,
     [Cep]        NCHAR (8)     NULL,
     [Number]     INT           NULL,
-    [Complement] NCHAR (255)   NULL,
+    [Complement] VARCHAR (255)   NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
