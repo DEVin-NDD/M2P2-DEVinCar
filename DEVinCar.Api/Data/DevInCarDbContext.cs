@@ -66,17 +66,15 @@ public class DevInCarDbContext : DbContext
                 .IsRequired();
 
             entity
-                .Property(u => u.BirthDate);
-                
+                .Property(u => u.BirthDate);         
             entity
                 .HasData( new[] {
                     new User (1, "jose@email.com", "12345678", "Jose", new DateTime(2000, 12, 10)),
                     new User (2, "andrea@email.com", "12345678", "Andrea", new DateTime(1999, 05, 11)),
                     new User (3, "adao@email.com", "12345678", "Adao", new DateTime(2005, 09, 02)),
                     new User (4, "monique@email.com", "12345678", "Monique", new DateTime(2001, 06, 07)),
-                });
+                });        
         });
-        
 
         modelBuilder.Entity<Car>(entity =>
         {
@@ -91,6 +89,19 @@ public class DevInCarDbContext : DbContext
             entity
                 .Property(c => c.SuggestedPrice);
 
+            entity
+                .HasData( new[] {
+                    new Car (1, "Camaro Chevrolet", 60000M),
+                    new Car (2, "Maverick Ford", 20000M),
+                    new Car (3, "Astra Chevrolet", 30000M),
+                    new Car (4, "Hilux Toyota", 20000M),
+                    new Car (5, "Bravo Fiat", 20000M),
+                    new Car (6, "BR800 Gurgel", 10000M),
+                    new Car (7, "147 Fiat", 50000M),
+                    new Car (8, "Del Rey Ford", 10000M),
+                    new Car (9, "Mustang Ford", 70000M),
+                    new Car (10, "Belina Ford", 20000M)
+                });
         });
     }
 }
