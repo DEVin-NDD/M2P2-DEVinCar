@@ -14,6 +14,7 @@ public class DevInCarDbContext : DbContext
 
     //public DbSet<XYZ> XYZs { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Car> Cars { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -66,6 +67,21 @@ public class DevInCarDbContext : DbContext
 
             entity
                 .Property(u => u.BirthDate);
+        });
+
+        modelBuilder.Entity<Car>(entity =>
+        {
+            entity.ToTable("Cars");
+            entity.HasKey(c => c.Id);
+
+            entity
+                .Property(c => c.Name)
+                .HasMaxLength(255)
+                .IsRequired();
+            
+            entity
+                .Property(c => c.SuggestedPrice);
+
         });
     }
 }
