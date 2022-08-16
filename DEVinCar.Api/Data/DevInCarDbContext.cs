@@ -1,4 +1,6 @@
+using DEVinCar.Api.Models;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace DEVinCar.Api.Data;
 
@@ -12,6 +14,7 @@ public class DevInCarDbContext : DbContext
     }
 
     //public DbSet<XYZ> XYZs { get; set; }
+    public Dbset<City> Cities { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -43,5 +46,18 @@ public class DevInCarDbContext : DbContext
         //             ...
         //         });
         // });
+        modelBuilder.Entity<City>(entity =>
+        {
+            entity.ToTable("Cities");
+            entity.HasKey(a => a.Id);
+            entity
+                    .Property(a => a.StateId)
+                    .IsRequired();
+            entity
+                    .Property(a => a.Name)
+                    .HasMaxLenght(255)
+                    .IsRequired();
+
+        });
     }
 }
