@@ -2,7 +2,7 @@
 
 namespace DEVinCar.Api.DTOs
 {
-    public class carDTO
+    public class CarDTO
     {
         [Required(ErrorMessage = "The name is required")]
         [MaxLength(255)]
