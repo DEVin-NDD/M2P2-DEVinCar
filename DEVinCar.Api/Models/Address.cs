@@ -8,6 +8,9 @@ namespace DEVinCar.Api.Models
         public string Cep { get; set; }
         public int Number { get; set; }
         public string Complement { get; set; }
+
+        public City City { get; set; }
+        
         
     }
 }
