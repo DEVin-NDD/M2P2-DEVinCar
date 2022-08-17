@@ -200,8 +200,6 @@ public class DevInCarDbContext : DbContext
 
             entity.HasKey(d => d.Id);
 
-            entity.Property(d => d.Id).HasColumnType("int");
-
             entity.Property(d => d.CityId).HasColumnType("int");
 
             entity.Property(d => d.Street).HasMaxLength(150);
