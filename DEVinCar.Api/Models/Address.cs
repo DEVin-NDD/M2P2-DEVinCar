@@ -11,6 +11,8 @@ namespace DEVinCar.Api.Models
 
         public City City { get; set; }
         
+        public List<Delivery> Deliveries {get; set;}
+        
         
     }
 }
