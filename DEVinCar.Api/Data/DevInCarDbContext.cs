@@ -20,6 +20,7 @@ public class DevInCarDbContext : DbContext
     public DbSet<Car> Cars { get; set; }
     public DbSet<Sale> Sales { get; set; }
     public DbSet<SaleCar> SaleCars { get; set; }
+    public DbSet<Delivery> Deliveries { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -87,14 +88,14 @@ public class DevInCarDbContext : DbContext
                 .IsRequired();
 
             entity
-                .Property(u => u.BirthDate);         
+                .Property(u => u.BirthDate);
             entity
-                .HasData( new[] {
+                .HasData(new[] {
                     new User (1, "jose@email.com", "123456opp78", "Jose", new DateTime(2000, 12, 10)),
                     new User (2, "andrea@email.com", "987dasd654321", "Andrea", new DateTime(1999, 05, 11)),
                     new User (3, "adao@email.com", "2589asd", "Adao", new DateTime(2005, 09, 02)),
                     new User (4, "monique@email.com", "asd45uio", "Monique", new DateTime(2001, 06, 07)),
-                });        
+                });
         });
 
         modelBuilder.Entity<Car>(entity =>
@@ -111,7 +112,7 @@ public class DevInCarDbContext : DbContext
                 .Property(c => c.SuggestedPrice);
 
             entity
-                .HasData( new[] {
+                .HasData(new[] {
                     new Car (1, "Camaro Chevrolet", 60000M),
                     new Car (2, "Maverick Ford", 20000M),
                     new Car (3, "Astra Chevrolet", 30000M),
@@ -166,5 +167,27 @@ public class DevInCarDbContext : DbContext
 
         });
 
+        modelBuilder.Entity<Delivery>(entity =>
+        {
+            entity.ToTable("Deliveries");
+
+            entity.HasKey(d => d.Id);
+
+            entity.Property(d => d.Id)
+                .HasColumnType("int");
+
+            entity.Property(d => d.AddressId)
+                .HasColumnType("int");
+
+
+            entity
+                .Property(d => d.SaleId)
+                .HasColumnType("int");
+
+
+            entity
+                .Property(d => d.DeliveryForecast)
+                .HasColumnType("timestamp");
+        });
     }
 }
