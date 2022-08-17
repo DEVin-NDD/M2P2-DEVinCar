@@ -13,15 +13,12 @@ public class DevInCarDbContext : DbContext
     }
 
     //public DbSet<XYZ> XYZs { get; set; }
-
-    public DbSet<City> Cities { get; set; }
-
     public DbSet<User> Users { get; set; }
     public DbSet<Car> Cars { get; set; }
     public DbSet<Sale> Sales { get; set; }
     public DbSet<SaleCar> SaleCars { get; set; }
     public DbSet<Delivery> Deliveries { get; set; }
-
+    public DbSet<Address> Addresses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -53,23 +50,6 @@ public class DevInCarDbContext : DbContext
         //             ...
         //         });
         // });
-
-        modelBuilder.Entity<City>(entity =>
-        {
-            entity.ToTable("Cities");
-            entity.HasKey(a => a.Id);
-            entity
-                    .HasOne<State>(city => city.State)
-                    .WithMany(s => s.Cities)
-                    .HasForeignKey(city => city.StateId)
-                    .IsRequired();
-            entity
-                    .Property(a => a.Name)
-                    .HasMaxLength(255)
-                    .IsRequired();
-
-        });
-
         modelBuilder.Entity<User>(entity =>
         {
             entity.ToTable("Users");
@@ -191,5 +171,30 @@ public class DevInCarDbContext : DbContext
                 .Property(d => d.DeliveryForecast)
                 .HasColumnType("timestamp");
         });
+
+        modelBuilder.Entity<Address>(entity =>
+        {
+            entity.ToTable("Adresses");
+
+            entity.HasKey(d => d.Id);
+
+            entity.Property(d => d.Id).HasColumnType("int");
+
+            entity.Property(d => d.CityId).HasColumnType("int");
+
+            entity.Property(d => d.Street).HasMaxLength(150);
+
+            entity.Property(d => d.Cep).HasMaxLength(8);
+
+            entity.Property(d => d.Number).HasColumnType("int");
+
+            entity.Property(d => d.Complement).HasMaxLength(255);
+
+            entity.Property(d => d.City).HasColumnType("int");
+
+
+        }
+
+        );
     }
 }
