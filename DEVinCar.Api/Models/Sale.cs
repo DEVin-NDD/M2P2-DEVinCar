@@ -4,16 +4,16 @@
     {
 
         public int Id { get; internal set; }
-        public int BuyerldId { get; set; }
+        public int BuyerId { get; set; }
         public int SellerId { get; set; }
         public DateTime SaleDate { get; set; }
         public Sale()
         {
         }
 
-        public Sale(int buyerldId, int sellerId, DateTime saleDate)
+        public Sale(int buyerId, int sellerId, DateTime saleDate)
         {
-            BuyerldId = buyerldId;
+            BuyerId = buyerId;
             SellerId = sellerId;
             SaleDate = saleDate;
         }
