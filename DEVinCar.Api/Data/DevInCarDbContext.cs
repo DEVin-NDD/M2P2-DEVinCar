@@ -197,7 +197,7 @@ public class DevInCarDbContext : DbContext
 
         modelBuilder.Entity<Address>(entity =>
         {
-            entity.ToTable("Adresses");
+            entity.ToTable("Addresses");
 
             entity.HasKey(d => d.Id);
 
@@ -210,8 +210,6 @@ public class DevInCarDbContext : DbContext
             entity.Property(d => d.Number).HasColumnType("int");
 
             entity.Property(d => d.Complement).HasMaxLength(255);
-
-            entity.Property(d => d.City).HasColumnType("int");
 
             entity.HasOne<City>(address => address.City)
             .WithMany(d => d.Addresses)
