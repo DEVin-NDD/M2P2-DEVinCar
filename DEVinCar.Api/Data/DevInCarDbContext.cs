@@ -13,12 +13,16 @@ public class DevInCarDbContext : DbContext
     }
 
     //public DbSet<XYZ> XYZs { get; set; }
+
+    public DbSet<City> Cities { get; set; }
+
     public DbSet<User> Users { get; set; }
     public DbSet<Car> Cars { get; set; }
     public DbSet<Sale> Sales { get; set; }
     public DbSet<SaleCar> SaleCars { get; set; }
     public DbSet<Delivery> Deliveries { get; set; }
     public DbSet<State> States { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -50,6 +54,23 @@ public class DevInCarDbContext : DbContext
         //             ...
         //         });
         // });
+
+        modelBuilder.Entity<City>(entity =>
+        {
+            entity.ToTable("Cities");
+            entity.HasKey(a => a.Id);
+            entity
+                    .HasOne<State>(city => city.State)
+                    .WithMany(s => s.Cities)
+                    .HasForeignKey(city => city.StateId)
+                    .IsRequired();
+            entity
+                    .Property(a => a.Name)
+                    .HasMaxLength(255)
+                    .IsRequired();
+
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.ToTable("Users");
@@ -135,18 +156,19 @@ public class DevInCarDbContext : DbContext
             entity.Property(sc => sc.Id)
                 .HasColumnType("int");
 
-            entity.Property(s => s.SaleId)
+            entity.Property(sc => sc.SaleId)
                 .HasColumnType("int")
                 .IsRequired();
 
-            entity.Property(s => s.CarId)
+            entity.Property(sc => sc.CarId)
                 .HasColumnType("int")
                 .IsRequired();
 
-            entity.Property(s => s.UnitPrice)
-                .HasColumnType("timestamp");
+            entity.Property(sc => sc.UnitPrice)
+                .HasPrecision(18, 2);
 
-
+            entity.Property(sc => sc.Amount)
+                .HasColumnType("int");
         });
 
         modelBuilder.Entity<Delivery>(entity =>
@@ -172,6 +194,7 @@ public class DevInCarDbContext : DbContext
                 .HasColumnType("timestamp");
         });
 
+<<<<<<< HEAD
         modelBuilder.Entity<State>(entity =>
         {
             entity.ToTable("States");
@@ -219,5 +242,7 @@ public class DevInCarDbContext : DbContext
                     new State (27, "Tocantins", "TO")
                 });
         });
+=======
+>>>>>>> a311fb3bfee5a8dadd6bc8259c6f0e9457254895
     }
 }
