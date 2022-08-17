@@ -14,4 +14,13 @@ public class UserController : ControllerBase
     {
         _context = context;
     }
+    [HttpGet("{id}")]
+    public ActionResult<User> GetPorId(
+    [FromRoute] int id
+)
+    {
+        var user = _context.Users.Find(id);
+        if (user == null) return NotFound();
+        return Ok(user);
+    }
 }
