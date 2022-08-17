@@ -59,7 +59,9 @@ public class DevInCarDbContext : DbContext
             entity.ToTable("Cities");
             entity.HasKey(a => a.Id);
             entity
-                    .Property(a => a.StateId)
+                    .HasOne<State>(city => city.State)
+                    .WithMany(s => s.Cities)
+                    .HasForeignKey(city => city.StateId)
                     .IsRequired();
             entity
                     .Property(a => a.Name)
