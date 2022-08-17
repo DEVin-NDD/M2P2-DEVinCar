@@ -6,5 +6,7 @@
         public int StateId { get; set; }
         public string Name { get; set; }
         public State State { get; set; }
+
+        public List<Address> Addresses { get; set; }
     }
 }
