@@ -212,10 +212,13 @@ public class DevInCarDbContext : DbContext
 
             entity.Property(d => d.City).HasColumnType("int");
 
-
+            entity.HasOne<City>(address => address.City)
+            .WithMany(d => d.Addresses)
+            .HasForeignKey(address => address.CityId)
+            .IsRequired();
         }
 
-       );
+      );
 
     }
 }
