@@ -194,7 +194,6 @@ public class DevInCarDbContext : DbContext
                 .HasColumnType("timestamp");
         });
 
-<<<<<<< HEAD
         modelBuilder.Entity<State>(entity =>
         {
             entity.ToTable("States");
@@ -242,7 +241,5 @@ public class DevInCarDbContext : DbContext
                     new State (27, "Tocantins", "TO")
                 });
         });
-=======
->>>>>>> a311fb3bfee5a8dadd6bc8259c6f0e9457254895
     }
 }
