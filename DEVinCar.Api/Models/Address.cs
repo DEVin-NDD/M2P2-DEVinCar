@@ -10,8 +10,10 @@ namespace DEVinCar.Api.Models
         public string Complement { get; set; }
 
         public City City { get; set; }
-        
+
         public List<Delivery> Deliveries {get; set;}
+
+        
         
         
     }
