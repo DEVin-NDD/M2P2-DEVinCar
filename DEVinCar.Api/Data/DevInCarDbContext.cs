@@ -176,8 +176,6 @@ public class DevInCarDbContext : DbContext
         {
             entity.ToTable("States");
             entity.HasKey(s => s.Id);
-	        entity.Property(s => s.Id)
-                .HasColumnType("int");
 
             entity
                 .Property(s => s.Name)
