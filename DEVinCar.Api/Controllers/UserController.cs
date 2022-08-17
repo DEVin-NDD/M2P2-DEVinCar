@@ -9,12 +9,24 @@ namespace DEVinCar.Api.Controllers;
 public class UserController : ControllerBase
 {
     private readonly DevInCarDbContext _context;
+
+
     public UserController(DevInCarDbContext context)
     {
         _context = context;
     }
 
-//Endpoint Delete User By Id - Ernesto Araújo
+    [HttpGet("{id}")]
+    public ActionResult<User> GetById(
+        [FromRoute] int id
+    )
+    {
+        var user = _context.Users.Find(id);
+        if (user == null) return NotFound();
+        return Ok(user);
+    }
+
+
     [HttpDelete("{userId}")]
     public ActionResult Delete(
         [FromRoute] int userId
@@ -30,5 +42,4 @@ public class UserController : ControllerBase
 
         return NoContent();
     }
-    
 }
