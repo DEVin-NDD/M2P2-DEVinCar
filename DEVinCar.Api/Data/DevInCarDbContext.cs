@@ -206,9 +206,10 @@ public class DevInCarDbContext : DbContext
                 .IsRequired();
 
             entity
-                .Property(s => s.Initials);
+                .Property(s => s.Initials)
                 .HasColumnType("varchar")
-                .HasMaxLength(2);
+                .HasMaxLength(2)
+                .IsRequired();
 
             entity
                 .HasData(new[] {
