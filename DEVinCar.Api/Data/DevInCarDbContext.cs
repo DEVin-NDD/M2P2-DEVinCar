@@ -113,19 +113,19 @@ public class DevInCarDbContext : DbContext
             entity.Property(sc => sc.Id)
                 .HasColumnType("int");
 
-            entity.Property(s => s.SaleId)
+            entity.Property(sc => sc.SaleId)
                 .HasColumnType("int")
                 .IsRequired();
 
-            entity.Property(s => s.CarId)
+            entity.Property(sc => sc.CarId)
                 .HasColumnType("int")
                 .IsRequired();
 
-            entity.Property(s => s.UnitPrice)
-                .HasColumnType("timestamp");
+            entity.Property(sc => sc.UnitPrice)
+                .HasPrecision(18, 2);
 
-
+            entity.Property(sc => sc.Amount)
+                .HasColumnType("int");
         });
-
     }
 }
