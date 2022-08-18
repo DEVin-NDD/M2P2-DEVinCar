@@ -217,13 +217,13 @@ public class DevInCarDbContext : DbContext
 
             entity.HasKey(d => d.Id);
 
-            entity.Property(d => d.CityId).HasColumnType("int");
+            entity.Property(d => d.CityId).HasColumnType("int").IsRequired();
 
-            entity.Property(d => d.Street).HasMaxLength(150);
+            entity.Property(d => d.Street).HasMaxLength(150).IsRequired();
 
-            entity.Property(d => d.Cep).HasMaxLength(8);
+            entity.Property(d => d.Cep).HasMaxLength(8).IsRequired();
 
-            entity.Property(d => d.Number).HasColumnType("int");
+            entity.Property(d => d.Number).HasColumnType("int").IsRequired();
 
             entity.Property(d => d.Complement).HasMaxLength(255);
 
@@ -242,13 +242,11 @@ public class DevInCarDbContext : DbContext
 
             entity
                 .Property(s => s.Name)
-		        .HasColumnType("varchar")
                 .HasMaxLength(100)
                 .IsRequired();
 
             entity
                 .Property(s => s.Initials)
-                .HasColumnType("varchar")
                 .HasMaxLength(2)
                 .IsRequired();
 
@@ -266,7 +264,7 @@ public class DevInCarDbContext : DbContext
                     new State (10, "Maranhão", "MA"),
                     new State (11, "Mato Grosso", "MT"),
                     new State (12, "Mato Grosso do Sul", "MS"),
-                    new State (13, "Minas Gerais", "(MG"),
+                    new State (13, "Minas Gerais", "MG"),
                     new State (14, "Pará", "PA"),
                     new State (15, "Paraíba", "PB"),
                     new State (16, "Paraná", "PR"),

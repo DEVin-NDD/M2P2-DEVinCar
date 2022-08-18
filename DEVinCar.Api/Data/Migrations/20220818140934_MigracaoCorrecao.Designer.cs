@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEVinCar.Api.Data.Migrations
 {
     [DbContext(typeof(DevInCarDbContext))]
-    [Migration("20220818133732_MigrationCorrecao")]
-    partial class MigrationCorrecao
+    [Migration("20220818140934_MigracaoCorrecao")]
+    partial class MigracaoCorrecao
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,6 +33,7 @@ namespace DEVinCar.Api.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Cep")
+                        .IsRequired()
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
 
@@ -47,6 +48,7 @@ namespace DEVinCar.Api.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Street")
+                        .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
@@ -251,12 +253,12 @@ namespace DEVinCar.Api.Data.Migrations
                     b.Property<string>("Initials")
                         .IsRequired()
                         .HasMaxLength(2)
-                        .HasColumnType("varchar(2)");
+                        .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -338,7 +340,7 @@ namespace DEVinCar.Api.Data.Migrations
                         new
                         {
                             Id = 13,
-                            Initials = "(MG",
+                            Initials = "MG",
                             Name = "Minas Gerais"
                         },
                         new
