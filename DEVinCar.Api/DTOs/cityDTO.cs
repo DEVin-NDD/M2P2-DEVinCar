@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DEVinCar.Api.DTOs
 {
-     public class City
+     public class CityDTO
     {     
         [Required(ErrorMessage = "The name is required")]
         [MaxLength(255)]  
