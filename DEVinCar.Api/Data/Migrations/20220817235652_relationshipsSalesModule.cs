@@ -37,13 +37,13 @@ namespace DEVinCar.Api.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "State",
+                name: "States",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Initials = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", nullable: true),
+                    Initials = table.Column<string>(type: "nvarchar(2)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -90,30 +90,30 @@ namespace DEVinCar.Api.Data.Migrations
                 {
                     table.PrimaryKey("PK_Cities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cities_State_StateId",
+                        name: "FK_Cities_States_StateId",
                         column: x => x.StateId,
-                        principalTable: "State",
+                        principalTable: "States",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "Addresses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CityId = table.Column<int>(type: "int", nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Cep = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Street = table.Column<string>(type: "nvarchar(150)", nullable: false),
+                    Cep = table.Column<string>(type: "nvarchar(8)", nullable: false),
                     Number = table.Column<int>(type: "int", nullable: false),
-                    Complement = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Complement = table.Column<string>(type: "nvarchar(255)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Address_Cities_CityId",
+                        name: "FK_Addresses_Cities_CityId",
                         column: x => x.CityId,
                         principalTable: "Cities",
                         principalColumn: "Id",
@@ -134,9 +134,9 @@ namespace DEVinCar.Api.Data.Migrations
                 {
                     table.PrimaryKey("PK_Deliveries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Deliveries_Address_AddressId",
+                        name: "FK_Deliveries_Addresses_AddressId",
                         column: x => x.AddressId,
-                        principalTable: "Address",
+                        principalTable: "Addresses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -176,8 +176,8 @@ namespace DEVinCar.Api.Data.Migrations
                 value: "asd45uio");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Address_CityId",
-                table: "Address",
+                name: "IX_Addresses_CityId",
+                table: "Addresses",
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
@@ -215,7 +215,7 @@ namespace DEVinCar.Api.Data.Migrations
                 name: "SaleCars");
 
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Sales");
