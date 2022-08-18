@@ -6,5 +6,12 @@
         public string Initials { get; set; }
 
         public List<City> Cities { get; set; }
+
+        public State(int id, string name, string initials)
+        {
+            Id = id;
+            Name = name;
+            Initials = initials;
+        }
     }
 }

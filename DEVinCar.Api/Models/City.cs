@@ -7,6 +7,6 @@
         public string Name { get; set; }
         public State State { get; set; }
 
-        public List<Address> Addresses { get; set; }
+        public virtual List<Address> Addresses { get; set; }
     }
 }
