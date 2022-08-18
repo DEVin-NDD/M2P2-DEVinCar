@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using DEVinCar.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -135,17 +136,16 @@ public class DevInCarDbContext : DbContext
             entity.Property(s => s.Id)
                 .HasColumnType("int");
 
-            entity.Property(s => s.BuyerId)
-                .HasColumnType("int")
-                .IsRequired();
-
-            entity.Property(s => s.SellerId)
-                .HasColumnType("int")
-                .IsRequired();
-
             entity.Property(s => s.SaleDate)
                 .HasColumnType("timestamp");
 
+            entity.HasOne(u => u.UserBuyer)
+                .WithMany()
+                .HasForeignKey(u => u.BuyerId);
+
+            entity.HasOne(u => u.UserSeller)
+                .WithMany()
+                .HasForeignKey(u => u.SellerId);       
         });
 
         modelBuilder.Entity<SaleCar>(entity =>
@@ -168,6 +168,15 @@ public class DevInCarDbContext : DbContext
 
             entity.Property(sc => sc.Amount)
                 .HasColumnType("int");
+
+            entity.HasOne<Car>(c => c.Car)
+                .WithMany(c => c.Sales)
+                .HasForeignKey(c => c.Id);                
+
+            entity.HasOne<Sale>(s => s.Sale)
+                .WithMany(c => c.Cars)
+                .HasForeignKey(s => s.Id);                
+
         });
 
         modelBuilder.Entity<Delivery>(entity =>
@@ -182,16 +191,24 @@ public class DevInCarDbContext : DbContext
             entity.Property(d => d.AddressId)
                 .HasColumnType("int");
 
-
             entity
                 .Property(d => d.SaleId)
                 .HasColumnType("int");
 
-
             entity
                 .Property(d => d.DeliveryForecast)
                 .HasColumnType("timestamp");
+
+            entity.HasOne<Address>(a=> a.Address)
+                .WithMany(d => d.Deliveries)
+                .HasForeignKey(a => a.AddressId);
+            
+            entity.HasOne<Sale>(s=> s.Sale)
+                .WithMany(d => d.Deliveries)
+                .HasForeignKey(s => s.SaleId);
+
         });
 
     }
 }
+

@@ -38,6 +38,8 @@ namespace DEVinCar.Api.Data.Migrations
                 });
         }
 
+        //relationalsheepsModuleSales
+
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(
