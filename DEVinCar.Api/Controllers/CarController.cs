@@ -43,11 +43,10 @@ public class CarController : ControllerBase
         {
             query = query.Where(c => c.SuggestedPrice == priceMax); // Preço Maximo
         }
-        if( query == null )
+        if( !query.ToList().Any())
         {
             return NoContent();
         }
-
         return Ok(query.ToList());
     }
 }
