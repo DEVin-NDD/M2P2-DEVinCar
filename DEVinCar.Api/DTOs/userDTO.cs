@@ -10,6 +10,7 @@ namespace DEVinCar.Api.DTOs{
         public string Email { get; set; }
         [Required(ErrorMessage = "The password is required")]
         [MaxLength(50)]
+        [MinLength(4, ErrorMessage = "The password must contain at least 4 digits")]
         public string Password { get; set; }
         public DateTime BirthDate { get; set; }
       
