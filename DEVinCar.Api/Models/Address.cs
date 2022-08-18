@@ -9,8 +9,8 @@ namespace DEVinCar.Api.Models
         public int Number { get; set; }
         public string Complement { get; set; }
 
-        public City City { get; set; }
+        public virtual City City { get; set; }
 
-        public List<Delivery> Deliveries {get; set;}
+        public virtual List<Delivery> Deliveries {get; set;}
     }
 }
