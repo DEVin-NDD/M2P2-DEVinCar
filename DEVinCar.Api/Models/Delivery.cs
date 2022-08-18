@@ -1,12 +1,17 @@
+using System.Security.AccessControl;
 using System;
 
 namespace DEVinCar.Api.Models;
-public class Delivery
+public class Delivery //entrega
 {
     public int Id { get; internal set; }
+    public DateTime DeliveryForecast { get; set; }
     public int AddressId { get; set; }
     public int SaleId { get; set; }
-    public DateTime DeliveryForecast { get; set; }
+    public virtual Address Address { get; set; }
+    public virtual Sale Sale { get; set; }
+
+  
 
     public Delivery()
     {
