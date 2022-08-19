@@ -9,11 +9,11 @@ namespace DEVinCar.Api.Controllers;
 [ApiController]
 [Route("api/address")]
 
-public class AddressController : ControllerBase
+public class AddressesController : ControllerBase
 {
     private readonly DevInCarDbContext _context;
 
-    public AddressController(DevInCarDbContext context)
+    public AddressesController(DevInCarDbContext context)
     {
         _context = context;
     }
