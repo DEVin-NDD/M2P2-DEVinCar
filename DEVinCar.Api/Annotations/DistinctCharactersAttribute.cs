@@ -10,7 +10,6 @@ public class DistinctCharactersAttribute : ValidationAttribute
         var arrPassword = password.ToCharArray().ToList();
 
         foreach (char letter in arrPassword){
-            System.Console.WriteLine(arrPassword[0]);
             if(letter != arrPassword[0])
                 return ValidationResult.Success;
         } 
