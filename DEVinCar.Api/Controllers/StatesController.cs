@@ -8,11 +8,11 @@ namespace DEVinCar.Api.Controllers;
 
 [ApiController]
 [Route("api/state")]
-public class StateController : ControllerBase
+public class StatesController : ControllerBase
 {
     private readonly DevInCarDbContext _context;
 
-    public StateController(DevInCarDbContext context)
+    public StatesController(DevInCarDbContext context)
     {
         _context = context;
     }
