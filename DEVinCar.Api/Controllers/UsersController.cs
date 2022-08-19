@@ -146,7 +146,33 @@ public class UserController : ControllerBase
         _context.SaveChanges();
         return Created("api/sale", sale.Id);
 
+    }
 
+    [HttpPost("/user/{userId}/buy")]
+    public ActionResult<Sale> PostBuyUserId(
+            [FromRoute] int userId,
+            [FromBody] SaleDTO body)
+    {
+        if (_context.Sales.Any(s => s.BuyerId == null || s.SellerId == null))
+        {
+            return NotFound();
+        }
+
+        if (body.SaleDate == null)
+        {
+            body.SaleDate = DateTime.Now;
+        }
+
+        var buy = new Sale
+        {
+            BuyerId = body.UserId,
+            SellerId = body.SellerId,
+            SaleDate = body.SaleDate,
+        };
+
+        _context.Sales.Add(buy);
+        _context.SaveChanges();
+        return Created("api/user/{userId}/buy", buy.Id);
     }
 }
 
