@@ -1,4 +1,5 @@
-using DEVinCar.Api.Data;
+﻿using DEVinCar.Api.Data;
+using DEVinCar.Api.DTOs;
 using DEVinCar.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,6 @@ namespace DEVinCar.Api.Controllers;
 public class UserController : ControllerBase
 {
     private readonly DevInCarDbContext _context;
-
 
     public UserController(DevInCarDbContext context)
     {
@@ -77,5 +77,31 @@ public class UserController : ControllerBase
         _context.SaveChanges();
 
         return NoContent();
+    }
+
+    [HttpPost]
+    public ActionResult<User> Post(
+        [FromBody] UserDTO userDto
+    )
+    {
+        var newUser = _context.Users.FirstOrDefault(u => u.Email == userDto.Email);
+        
+        if(newUser != null)
+        {
+            return BadRequest();
+        }
+
+        newUser = new User 
+        {
+            Name = userDto.Name,
+            Email = userDto.Email,
+            Password = userDto.Password,
+            BirthDate = userDto.BirthDate
+        };
+
+        _context.Users.Add(newUser);
+        _context.SaveChanges();
+
+        return Created("api/users", newUser.Id);
     }
 }
