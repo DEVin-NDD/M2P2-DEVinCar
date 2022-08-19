@@ -136,6 +136,11 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
+        if (body.SaleDate == null)
+        {
+            body.SaleDate = DateTime.Now;
+        }
+
         var sale = new Sale
         {
             BuyerId = body.BuyerId,
