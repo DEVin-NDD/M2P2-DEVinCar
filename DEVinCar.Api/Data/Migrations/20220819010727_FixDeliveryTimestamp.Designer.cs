@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEVinCar.Api.Data.Migrations
 {
     [DbContext(typeof(DevInCarDbContext))]
-    [Migration("20220818140934_MigracaoCorrecao")]
-    partial class MigracaoCorrecao
+    [Migration("20220819010727_FixDeliveryTimestamp")]
+    partial class FixDeliveryTimestamp
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -73,6 +73,7 @@ namespace DEVinCar.Api.Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<decimal>("SuggestedPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -176,9 +177,8 @@ namespace DEVinCar.Api.Data.Migrations
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("DeliveryForecast")
-                        .IsRequired()
-                        .HasColumnType("timestamp");
+                    b.Property<DateTime>("DeliveryForecast")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SaleId")
                         .HasColumnType("int");
@@ -203,9 +203,8 @@ namespace DEVinCar.Api.Data.Migrations
                     b.Property<int>("BuyerId")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("SaleDate")
-                        .IsRequired()
-                        .HasColumnType("timestamp");
+                    b.Property<DateTime>("SaleDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SellerId")
                         .HasColumnType("int");

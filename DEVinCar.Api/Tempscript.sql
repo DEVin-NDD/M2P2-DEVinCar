@@ -79,7 +79,7 @@ GO
 
 CREATE TABLE [Sales] (
     [Id] int NOT NULL IDENTITY,
-    [SaleDate] timestamp NOT NULL,
+    [SaleDate] datetime NOT NULL,
     [BuyerId] int NOT NULL,
     [SellerId] int NOT NULL,
     CONSTRAINT [PK_Sales] PRIMARY KEY ([Id]),
@@ -131,7 +131,7 @@ GO
 
 CREATE TABLE [Deliveries] (
     [Id] int NOT NULL IDENTITY,
-    [DeliveryForecast] timestamp NOT NULL,
+    [DeliveryForecast] datetime NOT NULL,
     [AddressId] int NOT NULL,
     [SaleId] int NOT NULL,
     CONSTRAINT [PK_Deliveries] PRIMARY KEY ([Id]),

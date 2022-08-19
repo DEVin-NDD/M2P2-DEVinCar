@@ -71,6 +71,7 @@ namespace DEVinCar.Api.Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<decimal>("SuggestedPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
