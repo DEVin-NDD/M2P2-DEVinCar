@@ -42,9 +42,9 @@ public class UserController : ControllerBase
             query = query.Where(c => c.BirthDate <= birthDateMax.Value);
         }
 
-        if (query.Count() == 0)
-        {
-            return NoContent();
+        if (!query.ToList().Any()) 
+        { 
+            return NoContent(); 
         }
 
         return Ok(
