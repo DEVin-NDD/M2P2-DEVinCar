@@ -114,8 +114,8 @@ public class DevInCarDbContext : DbContext
                 .IsRequired();
 
             entity
-                .Property(c => c.SuggestedPrice);
-
+                .Property(c => c.SuggestedPrice)
+                .HasPrecision(18,2);
             entity
                 .HasData(new[] {
                     new Car (1, "Camaro Chevrolet", 60000M),

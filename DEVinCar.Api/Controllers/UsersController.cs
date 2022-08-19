@@ -36,25 +36,19 @@ public class UserController : ControllerBase
 
     [HttpPost("{userId}/sales")]
     public ActionResult<Sale> PostSaleUserId(
-            //[FromRoute] int userId,
-            [FromBody] SaleDTO body)
+           [FromBody] SaleDTO body)
     {
-        if (body.UserId == null)
+
+        if (_context.Sales.Any(s => s.BuyerId == null || body.BuyerId == 0))
         {
             return BadRequest();
         }
 
-        //atributo do buyerId é obrigatorio,caso nao enviado deve rtornar o staus de Erro 400(bad request)
-        //if (_context.Sales.Any(s => s.BuyerId == null || body.BuyerId == 0))
-        //{
-        // return BadRequest();
-        // }
-        //caso o userId ou o BuyerId sejam referentes a ids de usaurios que nao exitan, retornar erro 404(no Found)
-        if (_context.Sales.Any(s => s.BuyerId == null || s.SellerId == null))
+        if (_context.Sales.Any(s => s.BuyerId != body.UserId || s.SellerId != body.UserId))
         {
             return NotFound();
         }
-        //deve ser criado um registro na entidade de venda, com sellerID sendo o userId
+
         var sale = new Sale
         {
             BuyerId = body.BuyerId,
@@ -64,7 +58,7 @@ public class UserController : ControllerBase
         _context.Sales.Add(sale);
         _context.SaveChanges();
         return Created("api/sale", sale.Id);
-        //caso sucesso retornar status 201 ,somente o id da venda
+
 
     }
 }
