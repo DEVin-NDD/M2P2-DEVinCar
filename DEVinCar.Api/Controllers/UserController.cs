@@ -1,4 +1,4 @@
-﻿using DEVinCar.Api.Data;
+using DEVinCar.Api.Data;
 using DEVinCar.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +19,11 @@ public class UserController : ControllerBase
 
     [HttpGet]
     public ActionResult<List<User>> Get(
-
-    [FromQuery] string Name,
-    [FromQuery] DateTime? birthDateMax,
-    [FromQuery] DateTime? birthDateMin
+        [FromQuery] string Name,
+        [FromQuery] DateTime? birthDateMax,
+        [FromQuery] DateTime? birthDateMin
     )
     {
-
         var query = _context.Users.AsQueryable();
 
         if (!string.IsNullOrEmpty(Name))
@@ -33,12 +31,12 @@ public class UserController : ControllerBase
             query = query.Where(c => c.Name.Contains(Name));
         }
 
-       if (birthDateMin.HasValue)
+        if (birthDateMin.HasValue)
         {
             query = query.Where(c => c.BirthDate >= birthDateMin.Value);
         }
-
-       if (birthDateMax.HasValue)
+        
+        if (birthDateMax.HasValue)
         {
             query = query.Where(c => c.BirthDate <= birthDateMax.Value);
         }
@@ -50,7 +48,6 @@ public class UserController : ControllerBase
 
         return Ok(
             query
-            .OrderBy(c => c.Name)
             .ToList()
             );
     }
