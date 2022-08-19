@@ -138,8 +138,8 @@ public class DevInCarDbContext : DbContext
             entity.Property(s => s.Id)
                 .HasColumnType("int");
 
-            entity.Property(s => s.SaleDate)
-                .HasColumnType("timestamp");
+            entity.Property(s => s.SaleDate);
+                
 
             entity.HasOne(u => u.UserBuyer)
                 .WithMany()
@@ -198,8 +198,8 @@ public class DevInCarDbContext : DbContext
                 .HasColumnType("int");
 
             entity
-                .Property(d => d.DeliveryForecast)
-                .HasColumnType("timestamp");
+                .Property(d => d.DeliveryForecast);
+                
 
             entity.HasOne<Address>(a=> a.Address)
                 .WithMany(d => d.Deliveries)
