@@ -68,4 +68,30 @@ public class CarController : ControllerBase
         _context.SaveChanges();
         return Created("api/car", car);
     }
+
+    [HttpPut("{carId}")]
+    public ActionResult<Car> Put([FromBody] CarDTO carDto, [FromRoute] int carId)
+    {
+        var car = _context.Cars.Find(carId);
+        var name = _context.Cars.Find(carDto.Name);
+
+        if (car == null)
+            return NotFound();
+        if (carDto.Name.Equals(null) || carDto.SuggestedPrice.Equals(null))
+            return BadRequest();
+        if (carDto.SuggestedPrice <= 0)
+            return BadRequest();
+        if (!name.Equals(null))
+            return BadRequest();
+        if (!carDto.Name.Equals(null) && !carDto.SuggestedPrice.Equals(null))
+        {
+            car.Name = carDto.Name;
+            car.SuggestedPrice = carDto.SuggestedPrice;
+            return NoContent();
+        }
+
+        _context.SaveChanges();
+        return Ok(car);
+    }
+
 }
