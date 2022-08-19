@@ -50,7 +50,7 @@ public class UserController : ControllerBase
     )
     {
         var newUser = _context.Users.FirstOrDefault(u => u.Email == userDto.Email);
-        //criar validação para formato de e-mail, data e
+        
         if(newUser != null)
         {
             return BadRequest();
