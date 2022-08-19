@@ -83,15 +83,12 @@ public class CarController : ControllerBase
             return BadRequest();
         if (!name.Equals(null))
             return BadRequest();
-        if (!carDto.Name.Equals(null) && !carDto.SuggestedPrice.Equals(null))
-        {
-            car.Name = carDto.Name;
-            car.SuggestedPrice = carDto.SuggestedPrice;
-            return NoContent();
-        }
-
+       
+        car.Name = carDto.Name;
+        car.SuggestedPrice = carDto.SuggestedPrice;
+          
         _context.SaveChanges();
-        return Ok(car);
+        return NoContent();
     }
 
 }
