@@ -47,7 +47,7 @@ public class StatesController : ControllerBase
         };
         _context.Addresses.Add(address);
         _context.SaveChanges();
-        return Created("api/state/{stateId}/city/{cityId}/", address.Id);
+        return Created($"api/state/{stateId}/city/{cityId}/", address.Id);
     }
 
 }
