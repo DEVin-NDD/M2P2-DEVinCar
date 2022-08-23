@@ -17,6 +17,39 @@ public class StatesController : ControllerBase
         _context = context;
     }
 
+    [HttpPost("{stateId}/city")]
+    public ActionResult<City> PostCity(
+        [FromRoute] int stateId,
+        [FromBody] CityDTO cityDTO
+    )
+    {
+        var state = _context.States.Find(stateId);
+       
+
+        if(state == null)
+        {
+            return NotFound(); //404
+        }
+
+        if(_context.Cities.Any(c => c.StateId == state.Id && c.Name == cityDTO.Name))
+        {
+            return BadRequest();
+        }
+
+        City city = new City
+        {
+            Name = cityDTO.Name,
+            // StateId = stateId,
+        };
+
+        _context.Cities.Add(city);
+
+        _context.SaveChanges();
+
+        return Created("api/{stateId}/city", city);
+    }
+
+
     [HttpPost("{stateId}/city/{cityId}/address")]
     public ActionResult<Address> PostAdress(
         [FromRoute] int stateId,
@@ -50,4 +83,9 @@ public class StatesController : ControllerBase
         return Created($"api/state/{stateId}/city/{cityId}/", address.Id);
     }
 
+    
 }
+// if(idstate != null && !_context.Cities.Any(c => c.Name == body.Name) )
+//        {
+ //           return BadRequest();
+ //       }
