@@ -48,4 +48,45 @@ public class AddressesController : ControllerBase
         return Ok(query.ToList());
 
     }
+
+    [HttpPatch("{addressId}")]
+    public ActionResult<Address> Patch([FromRoute] int addressId,
+                                       [FromBody] AddressPatchDTO addressPatchDTO) {
+
+        Address address = _context.Addresses.FirstOrDefault(a => a.Id == addressId);
+
+        if(address == null)
+            return NotFound($"The address with ID: {addressId} not found.");
+
+        string street = addressPatchDTO.Street ?? null;
+        string cep = addressPatchDTO.Cep ?? null;
+        string complement = addressPatchDTO.Complement ?? null;
+
+        if(street != null) {
+            if(addressPatchDTO.Street == "")
+                return BadRequest("The street name cannot be empty.");
+            address.Street = addressPatchDTO.Street;
+        }
+
+        if(addressPatchDTO.Cep != null) {
+            if(addressPatchDTO.Cep == "")
+                return BadRequest("The cep cannot be empty.");
+            if(!addressPatchDTO.Cep.All(char.IsDigit))
+                return BadRequest("Every characters in cep must be numeric.");
+            address.Cep = addressPatchDTO.Cep;
+        }
+
+        if(addressPatchDTO.Complement != null) {
+            if(addressPatchDTO.Complement == "")
+                return BadRequest("The complement cannot be empty.");
+            address.Complement = addressPatchDTO.Complement;
+        }
+
+        if(addressPatchDTO.Number != 0)
+            address.Number = addressPatchDTO.Number;
+
+        _context.SaveChanges();
+
+        return address;
+    }
 }
