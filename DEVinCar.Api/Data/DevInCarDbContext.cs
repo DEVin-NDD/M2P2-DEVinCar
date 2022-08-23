@@ -62,14 +62,18 @@ public class DevInCarDbContext : DbContext
             entity.ToTable("Cities");
             entity.HasKey(a => a.Id);
             entity
-                    .HasOne<State>(city => city.State)
-                    .WithMany(s => s.Cities)
-                    .HasForeignKey(city => city.StateId)
-                    .IsRequired();
+                .Property(a => a.Name)
+                .HasMaxLength(255)
+                .IsRequired();
             entity
-                    .Property(a => a.Name)
-                    .HasMaxLength(255)
-                    .IsRequired();
+                .Property(a => a.StateId)
+                .HasColumnType("int")
+                .IsRequired();
+            entity
+                .HasOne<State>(city => city.State)
+                .WithMany(s => s.Cities)
+                .HasForeignKey(city => city.StateId)
+                .IsRequired();
 
         });
 
