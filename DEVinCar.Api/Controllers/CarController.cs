@@ -15,4 +15,12 @@ public class CarController : ControllerBase
     {
         _context = context;
     }
+    [HttpGet("{carId")]
+
+    public ActionResult<Car> GetById([FromRoute] int carId)
+    {
+        var car = _context.Cars.Find(carId);
+        if (car == null) return NotFound();
+        return Ok(car);
+    }
 }
