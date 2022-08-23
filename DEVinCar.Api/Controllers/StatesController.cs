@@ -48,7 +48,6 @@ public class StatesController : ControllerBase
         return Created("api/{stateId}/city", city.Id);
     }
 
-
     [HttpPost("{stateId}/city/{cityId}/address")]
     public ActionResult<Address> PostAdress(
         [FromRoute] int stateId,
@@ -74,17 +73,13 @@ public class StatesController : ControllerBase
             Street = body.Street,
             Number = body.Number,
             Cep = body.Cep,
-            Complement = body.Complement
+            Complement = body.Complement,
+            City = idCity
 
         };
         _context.Addresses.Add(address);
         _context.SaveChanges();
         return Created($"api/state/{stateId}/city/{cityId}/", address.Id);
     }
-
-    
 }
-// if(idstate != null && !_context.Cities.Any(c => c.Name == body.Name) )
-//        {
- //           return BadRequest();
- //       }
+
