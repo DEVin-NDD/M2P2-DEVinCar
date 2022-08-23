@@ -68,4 +68,20 @@ public class CarController : ControllerBase
         _context.SaveChanges();
         return Created("api/car", car);
     }
+    
+    [HttpDelete("{carId}")]
+    public ActionResult Delete([FromRoute] int carId)
+        {
+            var car = _context.Cars.Find(carId);
+            var soldCar = _context.SaleCars.Any(s => s.CarId == carId);
+            if (car == null)
+            {
+                return NotFound();
+            }
+            if (soldCar)
+            {
+                return BadRequest();
+            }
+            return NoContent();
+        }
 }
