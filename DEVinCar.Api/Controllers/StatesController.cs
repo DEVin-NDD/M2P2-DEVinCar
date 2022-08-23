@@ -42,7 +42,8 @@ public class StatesController : ControllerBase
             Street = body.Street,
             Number = body.Number,
             Cep = body.Cep,
-            Complement = body.Complement
+            Complement = body.Complement,
+            City = idCity
 
         };
         _context.Addresses.Add(address);
