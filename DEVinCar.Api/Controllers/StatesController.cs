@@ -18,17 +18,16 @@ public class StatesController : ControllerBase
     }
 
     [HttpPost("{stateId}/city")]
-    public ActionResult<City> PostCity(
+    public ActionResult<int> PostCity(
         [FromRoute] int stateId,
         [FromBody] CityDTO cityDTO
     )
     {
-        var state = _context.States.Find(stateId);
-       
+        var state = _context.States.Find(stateId);       
 
         if(state == null)
         {
-            return NotFound(); //404
+            return NotFound();
         }
 
         if(_context.Cities.Any(c => c.StateId == state.Id && c.Name == cityDTO.Name))
@@ -36,17 +35,17 @@ public class StatesController : ControllerBase
             return BadRequest();
         }
 
-        City city = new City
+        var city = new City
         {
             Name = cityDTO.Name,
-            // StateId = stateId,
+            StateId = stateId,
         };
 
         _context.Cities.Add(city);
 
         _context.SaveChanges();
 
-        return Created("api/{stateId}/city", city);
+        return Created("api/{stateId}/city", city.Id);
     }
 
 

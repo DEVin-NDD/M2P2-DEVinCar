@@ -70,6 +70,7 @@ public class DevInCarDbContext : DbContext
                     .Property(a => a.Name)
                     .HasMaxLength(255)
                     .IsRequired();
+          
 
         });
 

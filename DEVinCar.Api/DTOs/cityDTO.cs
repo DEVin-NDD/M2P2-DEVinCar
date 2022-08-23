@@ -8,7 +8,7 @@ namespace DEVinCar.Api.DTOs
         [MaxLength(255)]  
         public string Name { get; set; }
 
-        
+       
        
     }
 }
