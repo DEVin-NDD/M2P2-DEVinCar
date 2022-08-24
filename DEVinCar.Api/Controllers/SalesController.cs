@@ -17,7 +17,9 @@ public class SalesController : ControllerBase
         _context = context;
     }
 
-    [HttpPost("/{saleId}/item")]
+
+    [HttpPost("{saleId}/item")]
+
     public ActionResult<SaleCar> PostSale(
        [FromBody] SaleCarDTO body,
        [FromRoute] int saleId
