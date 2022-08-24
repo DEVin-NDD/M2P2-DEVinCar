@@ -23,9 +23,18 @@ namespace DEVinCar.Api.Controllers
         [FromQuery] int? saleId
     )
         {
-            var deliveries = _context.Deliveries.FirstOrDefault(x => x.AddressId == addressId);
 
-            return Ok(deliveries);
+
+            if (addressId == null)
+            {
+                return Ok(_context.Deliveries.FirstOrDefault(s => s.SaleId == saleId));
+            }
+            if (saleId == null)
+            {
+                return Ok(_context.Deliveries.FirstOrDefault(a => a.AddressId == addressId));
+            }
+
+            return NotFound();
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Security.AccessControl;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace DEVinCar.Api.Models;
 public class Delivery //entrega
@@ -23,5 +24,10 @@ public class Delivery //entrega
         SaleId = saleId;
         DeliveryForecast = deliveryForecast;
 
+    }
+
+    public static implicit operator DbSet<object>(Delivery v)
+    {
+        throw new NotImplementedException();
     }
 }
