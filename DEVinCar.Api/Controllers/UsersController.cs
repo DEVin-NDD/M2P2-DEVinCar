@@ -62,23 +62,22 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    [HttpDelete("{userId}")]
-    public ActionResult Delete(
-        [FromRoute] int userId
-    )
+    [HttpGet("{userId}/buy")]
+    public ActionResult<Sale> GetByIdbuy(
+       [FromRoute] int userId)
+
+
     {
-        var user = _context.Users.Find(userId);
+        var sales = _context.Sales.Where(s => s.BuyerId == userId);
 
-        if (user == null)
+        if (sales == null || sales.Count() == 0)
         {
-            return NotFound();
+            return NoContent();
         }
-        _context.Users.Remove(user);
-        _context.SaveChanges();
-
-        return NoContent();
+        return Ok(sales.ToList());
     }
 
+   
     [HttpPost]
     public ActionResult<User> Post(
         [FromBody] UserDTO userDto
@@ -103,21 +102,6 @@ public class UserController : ControllerBase
         _context.SaveChanges();
 
         return Created("api/users", newUser.Id);
-    }
-   
-    [HttpGet("{userId}/buy")]
-    public ActionResult<Sale> GetByIdbuy(
-        [FromRoute] int userId)
-
-
-    {
-        var sales = _context.Sales.Where(s => s.BuyerId == userId);
-
-        if (sales == null || sales.Count() == 0)
-        {
-            return NoContent();
-        }
-        return Ok(sales.ToList());
     }
 
 
@@ -153,7 +137,8 @@ public class UserController : ControllerBase
 
     }
 
-    [HttpPost("/user/{userId}/buy")]
+
+    [HttpPost("{userId}/buy")]
     public ActionResult<Sale> PostBuyUserId(
             [FromRoute] int userId,
             [FromBody] SaleDTO body)
@@ -179,6 +164,24 @@ public class UserController : ControllerBase
         _context.SaveChanges();
         return Created("api/user/{userId}/buy", buy.Id);
     }
+
+    [HttpDelete("{userId}")]
+    public ActionResult Delete(
+       [FromRoute] int userId
+   )
+    {
+        var user = _context.Users.Find(userId);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+        _context.Users.Remove(user);
+        _context.SaveChanges();
+
+        return NoContent();
+    }
+
 }
 
 
