@@ -17,6 +17,14 @@ public class CarController : ControllerBase
         _context = context;
     }
     
+    [HttpGet("{carId}")]
+    public ActionResult<Car> GetById([FromRoute] int carId)
+    {
+        var car = _context.Cars.Find(carId);
+        if (car == null) return NotFound();
+        return Ok(car);
+    }
+    
     [HttpGet]
     public ActionResult<List<Car>> Get(
         [FromQuery] string name,
@@ -71,17 +79,39 @@ public class CarController : ControllerBase
     
     [HttpDelete("{carId}")]
     public ActionResult Delete([FromRoute] int carId)
+    {
+        var car = _context.Cars.Find(carId);
+        var soldCar = _context.SaleCars.Any(s => s.CarId == carId);
+        if (car == null)
         {
-            var car = _context.Cars.Find(carId);
-            var soldCar = _context.SaleCars.Any(s => s.CarId == carId);
-            if (car == null)
-            {
-                return NotFound();
-            }
-            if (soldCar)
-            {
-                return BadRequest();
-            }
-            return NoContent();
+            return NotFound();
         }
+        if (soldCar)
+        {
+            return BadRequest();
+        }
+        return NoContent();
+    }
+
+    [HttpPut("{carId}")]
+    public ActionResult<Car> Put([FromBody] CarDTO carDto, [FromRoute] int carId)
+    {
+        var car = _context.Cars.Find(carId);
+        var name = _context.Cars.Find(carDto.Name);
+
+        if (car == null)
+            return NotFound();
+        if (carDto.Name.Equals(null) || carDto.SuggestedPrice.Equals(null))
+            return BadRequest();
+        if (carDto.SuggestedPrice <= 0)
+            return BadRequest();
+        if (!name.Equals(null))
+            return BadRequest();
+       
+        car.Name = carDto.Name;
+        car.SuggestedPrice = carDto.SuggestedPrice;
+          
+        _context.SaveChanges();
+        return NoContent();
+    }
 }
