@@ -105,6 +105,23 @@ public class UserController : ControllerBase
     }
 
 
+    [HttpGet("{userId}/buy")]
+    public ActionResult<Sale> GetByIdbuy(
+        [FromRoute] int userId)
+
+
+    {
+        var sales = _context.Sales.Where(s => s.BuyerId == userId);
+
+        if (sales == null || sales.Count() == 0)
+        {
+            return NoContent();
+        }
+        return Ok(sales.ToList());
+    }
+
+
+
     [HttpPost("{userId}/sales")]
     public ActionResult<Sale> PostSaleUserId(
            [FromBody] SaleDTO body)
@@ -137,8 +154,8 @@ public class UserController : ControllerBase
 
     }
 
-
     [HttpPost("{userId}/buy")]
+
     public ActionResult<Sale> PostBuyUserId(
             [FromRoute] int userId,
             [FromBody] SaleDTO body)
@@ -165,6 +182,20 @@ public class UserController : ControllerBase
         return Created("api/user/{userId}/buy", buy.Id);
     }
 
+
+    [HttpGet("{userId}/sales")]
+    public ActionResult<Sale> GetSalesBySellerId(
+        [FromRoute] int userId)
+    {
+        var sales = _context.Sales.Where(s => s.SellerId == userId);
+
+        if (sales == null || sales.Count() == 0)
+        {
+            return NoContent();
+        }
+        return Ok(sales.ToList());
+    }
+
     [HttpDelete("{userId}")]
     public ActionResult Delete(
        [FromRoute] int userId
@@ -181,6 +212,7 @@ public class UserController : ControllerBase
 
         return NoContent();
     }
+
 
 }
 
