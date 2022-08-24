@@ -104,7 +104,7 @@ public class UserController : ControllerBase
 
         return Created("api/users", newUser.Id);
     }
-   
+
     [HttpGet("{userId}/buy")]
     public ActionResult<Sale> GetByIdbuy(
         [FromRoute] int userId)
@@ -153,6 +153,7 @@ public class UserController : ControllerBase
 
     }
 
+
     [HttpPost("/user/{userId}/buy")]
     public ActionResult<Sale> PostBuyUserId(
             [FromRoute] int userId,
@@ -178,6 +179,20 @@ public class UserController : ControllerBase
         _context.Sales.Add(buy);
         _context.SaveChanges();
         return Created("api/user/{userId}/buy", buy.Id);
+    }
+
+
+    [HttpGet("/user/{userId}/sales")]
+    public ActionResult<Sale> GetSalesBySellerId(
+        [FromRoute] int userId)
+    {
+        var sales = _context.Sales.Where(s => s.SellerId == userId);
+
+        if (sales == null || sales.Count() == 0)
+        {
+            return NoContent();
+        }
+        return Ok(sales.ToList());
     }
 }
 
