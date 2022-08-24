@@ -5,6 +5,7 @@
         public int Id { get; internal set; }
         public string Name { get; set; }
         public decimal SuggestedPrice { get; set; }
+        public virtual List<SaleCar> Sales { get; set; }
         public Car ()
         {
         }
