@@ -2,6 +2,8 @@
 using DEVinCar.Api.Data;
 using DEVinCar.Api.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.Runtime.ConstrainedExecution;
 
 namespace DEVinCar.Api.Controllers
 {
@@ -18,23 +20,31 @@ namespace DEVinCar.Api.Controllers
 
 
         [HttpGet]
-        public ActionResult<Delivery> GetByIdbuy(
+        public ActionResult<Delivery> Get(
         [FromQuery] int? addressId,
         [FromQuery] int? saleId
     )
         {
+            var query = _context.Deliveries.AsQueryable();
 
-
-            if (addressId == null)
+            if (addressId.HasValue)
             {
-                return Ok(_context.Deliveries.FirstOrDefault(s => s.SaleId == saleId));
-            }
-            if (saleId == null)
-            {
-                return Ok(_context.Deliveries.FirstOrDefault(a => a.AddressId == addressId));
+                query = query.Where(a => a.AddressId == addressId);
             }
 
-            return NotFound();
+            if (saleId.HasValue)
+            {
+                query = query.Where(s => s.SaleId == saleId);
+            }
+
+          
+            if (!query.ToList().Any())
+            {
+                return NoContent();
+            }
+
+            return Ok(query.ToList());
+       
         }
     }
 }
