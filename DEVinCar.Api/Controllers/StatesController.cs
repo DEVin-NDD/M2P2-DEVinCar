@@ -1,6 +1,7 @@
 ﻿using DEVinCar.Api.Models;
 using DEVinCar.Api.Data;
 using DEVinCar.Api.DTOs;
+using DEVinCar.Api.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,14 +24,14 @@ public class StatesController : ControllerBase
         [FromBody] CityDTO cityDTO
     )
     {
-        var state = _context.States.Find(stateId);       
+        var state = _context.States.Find(stateId);
 
-        if(state == null)
+        if (state == null)
         {
             return NotFound();
         }
 
-        if(_context.Cities.Any(c => c.StateId == state.Id && c.Name == cityDTO.Name))
+        if (_context.Cities.Any(c => c.StateId == state.Id && c.Name == cityDTO.Name))
         {
             return BadRequest();
         }
@@ -57,12 +58,12 @@ public class StatesController : ControllerBase
         var idState = _context.States.Find(stateId);
         var idCity = _context.Cities.Find(cityId);
 
-        if(idState == null || idCity == null)
+        if (idState == null || idCity == null)
         {
             return NotFound();
         }
 
-        if(idCity.StateId != idState.Id)
+        if (idCity.StateId != idState.Id)
         {
             return BadRequest();
         }
@@ -80,6 +81,38 @@ public class StatesController : ControllerBase
         _context.Addresses.Add(address);
         _context.SaveChanges();
         return Created($"api/state/{stateId}/city/{cityId}/", address.Id);
+    }
+
+    [HttpGet("{stateId}/city/{cityId}")]
+
+    public ActionResult<GetCityByIdViewModel> GetCityById
+    (
+        [FromRoute] int stateId,
+        [FromRoute] int cityId
+    )
+    {
+        var idState = _context.States.Find(stateId);
+        var idCity = _context.Cities.Find(cityId);
+
+        if (idState == null || idCity == null)
+        {
+            return NotFound();
+        }
+
+        if (idCity.StateId != idState.Id)
+        {
+            return BadRequest();
+        }
+
+        GetCityByIdViewModel body = new GetCityByIdViewModel(
+            idCity.Id,
+            idCity.Name,
+            idState.Id,
+            idState.Name,
+            idState.Initials
+        );
+
+        return Ok(body);
     }
 }
 
