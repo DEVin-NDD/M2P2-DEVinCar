@@ -15,7 +15,7 @@ public class CarController : ControllerBase
     {
         _context = context;
     }
-    [HttpGet("{carId")]
+    [HttpGet("{carId}")]
 
     public ActionResult<Car> GetById([FromRoute] int carId)
     {
