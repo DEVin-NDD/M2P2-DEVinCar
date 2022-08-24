@@ -105,23 +105,6 @@ public class UserController : ControllerBase
     }
 
 
-    [HttpGet("{userId}/buy")]
-    public ActionResult<Sale> GetByIdbuy(
-        [FromRoute] int userId)
-
-
-    {
-        var sales = _context.Sales.Where(s => s.BuyerId == userId);
-
-        if (sales == null || sales.Count() == 0)
-        {
-            return NoContent();
-        }
-        return Ok(sales.ToList());
-    }
-
-
-
     [HttpPost("{userId}/sales")]
     public ActionResult<Sale> PostSaleUserId(
            [FromBody] SaleDTO body)
