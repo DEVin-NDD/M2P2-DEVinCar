@@ -57,12 +57,12 @@ public class StatesController : ControllerBase
         var idState = _context.States.Find(stateId);
         var idCity = _context.Cities.Find(cityId);
 
-        if(idState == null || idCity == null)
+        if (idState == null || idCity == null)
         {
             return NotFound();
         }
 
-        if(idCity.StateId != idState.Id)
+        if (idCity.StateId != idState.Id)
         {
             return BadRequest();
         }
@@ -80,6 +80,22 @@ public class StatesController : ControllerBase
         _context.Addresses.Add(address);
         _context.SaveChanges();
         return Created($"api/state/{stateId}/city/{cityId}/", address.Id);
+    }
+
+    [HttpGet("{stateId}")]
+    public ActionResult<StateDTO> GetStateById(
+       [FromRoute] int stateId
+   )
+    {
+        var stateFiltro = _context.States.Find(stateId);
+        if (stateFiltro == null)
+        {
+            return NotFound("There is no given with this id");
+        }
+
+        var retornaState = $" {stateFiltro.Name} - {stateFiltro.Initials}";
+
+        return Ok(retornaState);
     }
 }
 
