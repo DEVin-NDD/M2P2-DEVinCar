@@ -114,5 +114,25 @@ public class StatesController : ControllerBase
 
         return Ok(body);
     }
+
+    [HttpGet("{stateId}")]
+    public ActionResult<GetStatiByIdViewModel> GetStateById(
+            [FromRoute] int stateId
+        )
+    {
+        var filterStati = _context.States.Find(stateId);
+        if (filterStati == null)
+        {
+            return NotFound("There is no given with this id");
+        }
+
+        var response = new GetStatiByIdViewModel(
+            filterStati.Id,
+            filterStati.Name,
+            filterStati.Initials
+            );
+       
+        return Ok(response);
+    }
 }
 
