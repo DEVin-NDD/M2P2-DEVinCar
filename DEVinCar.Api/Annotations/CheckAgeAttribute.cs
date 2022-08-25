@@ -18,7 +18,7 @@ public class CheckAgeAttribute : ValidationAttribute
         {
             return ValidationResult.Success;
         }
-        return new ValidationResult("User must be older then 18 years");
+        return new ValidationResult($"User must be older than {_age} years");
     }
 
 }
