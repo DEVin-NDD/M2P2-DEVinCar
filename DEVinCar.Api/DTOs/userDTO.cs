@@ -15,6 +15,7 @@ namespace DEVinCar.Api.DTOs{
         [MinLength(4, ErrorMessage = "The password must contain at least 4 digits")]
         [DistinctCharactersAttribute]
         public string Password { get; set; }
+        [DataType(DataType.Date, ErrorMessage="Date must be valid")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [CheckAgeAttribute(18)]
         public DateTime BirthDate { get; set; }
