@@ -16,7 +16,7 @@ public class CarController : ControllerBase
     {
         _context = context;
     }
-    
+
     [HttpGet("{carId}")]
     public ActionResult<Car> GetById([FromRoute] int carId)
     {
@@ -24,35 +24,32 @@ public class CarController : ControllerBase
         if (car == null) return NotFound();
         return Ok(car);
     }
-    
+
     [HttpGet]
     public ActionResult<List<Car>> Get(
         [FromQuery] string name,
         [FromQuery] decimal? priceMin,
         [FromQuery] decimal? priceMax
-
     )
     {
-        // Regras de negócio;
         var query = _context.Cars.AsQueryable();
-
         if (!string.IsNullOrEmpty(name))
         {
-            query = query.Where(c => c.Name == name);//Retorna a lista name
+            query = query.Where(c => c.Name.Contains(name));
         }
-        if(priceMin > priceMax) 
+        if (priceMin > priceMax)
         {
-            return BadRequest();//Erro 400
+            return BadRequest();
         }
-        if(priceMin.HasValue) 
+        if (priceMin.HasValue)
         {
-            query = query.Where(c => c.SuggestedPrice == priceMin); // Preço Minimo
+            query = query.Where(c => c.SuggestedPrice >= priceMin);
         }
-        if(priceMax.HasValue)
+        if (priceMax.HasValue)
         {
-            query = query.Where(c => c.SuggestedPrice == priceMax); // Preço Maximo
+            query = query.Where(c => c.SuggestedPrice <= priceMax);
         }
-        if( !query.ToList().Any())
+        if (!query.ToList().Any())
         {
             return NoContent();
         }
@@ -64,7 +61,8 @@ public class CarController : ControllerBase
         [FromBody] CarDTO body
     )
     {
-        if(_context.Cars.Any(c => c.Name == body.Name || c.SuggestedPrice <= 0)){
+        if (_context.Cars.Any(c => c.Name == body.Name || c.SuggestedPrice <= 0))
+        {
             return BadRequest();
         }
         var car = new Car
@@ -76,7 +74,7 @@ public class CarController : ControllerBase
         _context.SaveChanges();
         return Created("api/car", car);
     }
-    
+
     [HttpDelete("{carId}")]
     public ActionResult Delete([FromRoute] int carId)
     {
@@ -107,10 +105,10 @@ public class CarController : ControllerBase
             return BadRequest();
         if (!name.Equals(null))
             return BadRequest();
-       
+
         car.Name = carDto.Name;
         car.SuggestedPrice = carDto.SuggestedPrice;
-          
+
         _context.SaveChanges();
         return NoContent();
     }
