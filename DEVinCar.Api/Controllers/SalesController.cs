@@ -56,4 +56,52 @@ public class SalesController : ControllerBase
         return NotFound();
     }
 
+    [HttpPost("{saleId}/deliver")]
+    public ActionResult<Delivery> PostDeliver(
+       [FromRoute] int saleId,
+       [FromQuery] int? addressId,
+       [FromQuery] DateTime? deliveryForecast)
+    {
+        if (!addressId.HasValue)
+        {
+            return BadRequest();
+        }
+
+        var querySales = _context.Sales.FirstOrDefault(a => a.Id == saleId);
+        if (querySales == null)
+        {
+            return NotFound();
+        }
+
+        var queryDeliveries = _context.Deliveries.FirstOrDefault(a => a.AddressId == addressId);
+
+        if (queryDeliveries == null)
+        {
+            return NotFound();
+        }
+
+        var now = DateTime.Now;
+        if (deliveryForecast < now)
+        {
+            return BadRequest();
+        }
+
+        if (deliveryForecast == null)
+        {
+            deliveryForecast = DateTime.Now.AddDays(7);
+        }
+
+        var deliver = new Delivery
+        {
+            AddressId = (int)addressId,
+            SaleId = saleId,
+            DeliveryForecast = (DateTime)deliveryForecast
+        };
+
+        _context.Deliveries.Add(deliver);
+        _context.SaveChanges();
+
+        return Created("{saleId}/deliver", deliver);
+    }
+
 }
