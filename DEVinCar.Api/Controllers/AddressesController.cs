@@ -22,26 +22,32 @@ public class AddressesController : ControllerBase
     public ActionResult<List<Address>> Get([FromQuery] int? cityId,
                                            [FromQuery] int? stateId,
                                            [FromQuery] string street,
-                                           [FromQuery] string cep) {
+                                           [FromQuery] string cep)
+    {
         var query = _context.Addresses.AsQueryable();
 
-        if(cityId.HasValue) {
+        if (cityId.HasValue)
+        {
             query = query.Where(a => a.CityId == cityId);
         }
-        if(stateId.HasValue) {
+        if (stateId.HasValue)
+        {
             query = query.Where(a => a.City.StateId == stateId);
         }
 
-        if(!string.IsNullOrEmpty(street)){
+        if (!string.IsNullOrEmpty(street))
+        {
             street = street.ToUpper();
             query = query.Where(a => a.Street.Contains(street));
         }
 
-        if(!string.IsNullOrEmpty(cep)) {
+        if (!string.IsNullOrEmpty(cep))
+        {
             query = query.Where(a => a.Cep == cep);
         }
 
-        if(!query.ToList().Any()) {
+        if (!query.ToList().Any())
+        {
             return NoContent();
         }
 
@@ -51,42 +57,70 @@ public class AddressesController : ControllerBase
 
     [HttpPatch("{addressId}")]
     public ActionResult<Address> Patch([FromRoute] int addressId,
-                                       [FromBody] AddressPatchDTO addressPatchDTO) {
+                                       [FromBody] AddressPatchDTO addressPatchDTO)
+    {
 
         Address address = _context.Addresses.FirstOrDefault(a => a.Id == addressId);
 
-        if(address == null)
+        if (address == null)
             return NotFound($"The address with ID: {addressId} not found.");
 
         string street = addressPatchDTO.Street ?? null;
         string cep = addressPatchDTO.Cep ?? null;
         string complement = addressPatchDTO.Complement ?? null;
 
-        if(street != null) {
-            if(addressPatchDTO.Street == "")
+        if (street != null)
+        {
+            if (addressPatchDTO.Street == "")
                 return BadRequest("The street name cannot be empty.");
             address.Street = addressPatchDTO.Street;
         }
 
-        if(addressPatchDTO.Cep != null) {
-            if(addressPatchDTO.Cep == "")
+        if (addressPatchDTO.Cep != null)
+        {
+            if (addressPatchDTO.Cep == "")
                 return BadRequest("The cep cannot be empty.");
-            if(!addressPatchDTO.Cep.All(char.IsDigit))
+            if (!addressPatchDTO.Cep.All(char.IsDigit))
                 return BadRequest("Every characters in cep must be numeric.");
             address.Cep = addressPatchDTO.Cep;
         }
 
-        if(addressPatchDTO.Complement != null) {
-            if(addressPatchDTO.Complement == "")
+        if (addressPatchDTO.Complement != null)
+        {
+            if (addressPatchDTO.Complement == "")
                 return BadRequest("The complement cannot be empty.");
             address.Complement = addressPatchDTO.Complement;
         }
 
-        if(addressPatchDTO.Number != 0)
+        if (addressPatchDTO.Number != 0)
             address.Number = addressPatchDTO.Number;
 
         _context.SaveChanges();
 
         return address;
+    }
+
+    [HttpDelete("{addressId}")]
+
+    public ActionResult<Address> DeleteById([FromRoute] int addressId)
+    {
+        Address address = _context.Addresses.Find(addressId);
+
+        if (address == null)
+        {
+            return NotFound($"The address with ID: {addressId} not found.");
+        }
+
+        Delivery relation = _context.Deliveries.FirstOrDefault(d => d.AddressId == addressId);
+
+        if (relation != null)
+        {
+            return BadRequest($"The address with ID: {addressId} is related to a delivery.");
+        }
+
+        _context.Addresses.Remove(address);
+        _context.SaveChanges();
+
+        return NoContent();
     }
 }
