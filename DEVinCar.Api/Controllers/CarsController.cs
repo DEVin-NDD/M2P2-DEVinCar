@@ -43,11 +43,11 @@ public class CarController : ControllerBase
         }
         if (priceMin.HasValue)
         {
-            query = query.Where(c => c.SuggestedPrice == priceMin);
+            query = query.Where(c => c.SuggestedPrice >= priceMin);
         }
         if (priceMax.HasValue)
         {
-            query = query.Where(c => c.SuggestedPrice == priceMax);
+            query = query.Where(c => c.SuggestedPrice <= priceMax);
         }
         if (!query.ToList().Any())
         {
