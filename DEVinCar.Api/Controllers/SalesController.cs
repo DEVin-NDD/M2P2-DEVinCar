@@ -4,6 +4,7 @@ using DEVinCar.Api.DTOs;
 using DEVinCar.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using DEVinCar.Api.ViewModels;
 
 namespace DEVinCar.Api.Controllers;
 
@@ -17,9 +18,33 @@ public class SalesController : ControllerBase
         _context = context;
     }
 
+    [HttpGet("{saleId}")]
+    public ActionResult<SaleViewModel> GetItensSale([FromRoute] int saleId)
+    {
+        var sales = _context.Sales
+        .Include(s => s.Cars)
+        .Include(s => s.UserBuyer)
+        .Include(s => s.UserSeller)
+        .Where(s => s.Id == saleId)
+        .Select(s => new SaleViewModel
+        {
+            SellerName = s.UserSeller.Name,
+            BuyerName = s.UserBuyer.Name,
+            SaleDate = s.SaleDate,
+            Itens = s.Cars.Select(sc => new CarViewModel
+            {
+                Name = sc.Car.Name,
+                UnitPrice = sc.UnitPrice,
+                Amount = sc.Amount,
+                Total = sc.Sum(sc.UnitPrice, sc.Amount)
+            }).ToList()
+        })
+        .FirstOrDefault();
+        if (sales == null) return NotFound();
+        return Ok(sales);
+    }
 
     [HttpPost("{saleId}/item")]
-
     public ActionResult<SaleCar> PostSale(
        [FromBody] SaleCarDTO body,
        [FromRoute] int saleId
@@ -137,20 +162,20 @@ public class SalesController : ControllerBase
         try
         {
 
-        
+
             carID.Amount = amount;
 
 
-        _context.SaleCars.Update(carID);
+            _context.SaleCars.Update(carID);
 
             _context.SaveChanges();
             return NoContent();
 
-         }
+        }
         catch (Exception ex)
         {
             return BadRequest();
         }
 
     }
-    }
+}

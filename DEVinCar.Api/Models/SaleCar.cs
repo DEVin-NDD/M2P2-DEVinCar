@@ -10,16 +10,11 @@
         public virtual Car Car { get; set; }
         public virtual Sale Sale { get; set; }
         public SaleCar()
-
         {
         }
-
-        public SaleCar(int saleId, int carId, decimal unitPrice, int amount)
+        public decimal Sum(decimal UnitPrice, int? Amount)
         {
-            SaleId = saleId;
-            CarId = carId;
-            UnitPrice = unitPrice;
-            Amount = amount;
+            return UnitPrice * (int)Amount;
         }
     }
 }
