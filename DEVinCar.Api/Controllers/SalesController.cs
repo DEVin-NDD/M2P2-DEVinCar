@@ -104,4 +104,53 @@ public class SalesController : ControllerBase
         return Created("{saleId}/deliver", deliver);
     }
 
-}
+
+
+
+    [HttpPatch("{saleId}/car/{carId}/amount/{amount}")]
+
+    public ActionResult<SaleCar> Patch(
+            [FromRoute] int saleId,
+            [FromRoute] int carId,
+            [FromRoute] int amount
+            )
+
+    {
+        var carSaleId = _context.Sales.Find(saleId);
+        var carID = _context.SaleCars.Find(carId);
+
+        var saless = _context.SaleCars.FirstOrDefault(s => s.Id == saleId);
+
+
+        if (carSaleId == null || carID == null)
+        {
+            return NotFound();
+
+        }
+
+        if (amount <= 0)
+        {
+            return BadRequest();
+        }
+
+
+        try
+        {
+
+        
+            carID.Amount = amount;
+
+
+        _context.SaleCars.Update(carID);
+
+            _context.SaveChanges();
+            return NoContent();
+
+         }
+        catch (Exception ex)
+        {
+            return BadRequest();
+        }
+
+    }
+    }
