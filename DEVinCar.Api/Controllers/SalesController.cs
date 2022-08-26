@@ -57,7 +57,7 @@ public class SalesController : ControllerBase
     }
 
     [HttpPost("{saleId}/deliver")]
-    public ActionResult<Delivery> PostDeliver(
+    public ActionResult<DeliveryDTO> PostDeliver(
            [FromRoute] int saleId,
            [FromBody] DeliveryDTO body)
     {
@@ -76,7 +76,7 @@ public class SalesController : ControllerBase
             return NotFound();
         }
 
-        var now = DateTime.Now;
+        var now = DateTime.Now.Date;
         if (body.DeliveryForecast < now)
         {
             return BadRequest();
@@ -97,7 +97,7 @@ public class SalesController : ControllerBase
         _context.Deliveries.Add(deliver);
         _context.SaveChanges();
 
-        return Created("{saleId}/deliver", deliver);
+        return Created("{saleId}/deliver", deliver.Id);
     }
 
 }
