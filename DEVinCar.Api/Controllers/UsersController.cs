@@ -107,6 +107,7 @@ public class UserController : ControllerBase
 
     [HttpPost("{userId}/sales")]
     public ActionResult<Sale> PostSaleUserId(
+           [FromRoute] int userId,
            [FromBody] SaleDTO body)
     {
 
@@ -115,9 +116,16 @@ public class UserController : ControllerBase
             return BadRequest();
         }
 
-        if (_context.Sales.Any(s => s.BuyerId != body.UserId || s.SellerId != body.UserId))
+        var user = _context.Users.Find(userId);
+        if (user == null)
         {
-            return NotFound();
+            return NotFound("The user does not exist!");
+        }
+
+        var bayer = _context.Users.Find(body.BuyerId);
+        if (bayer == null)
+        {
+            return NotFound("The user does not exist!");
         }
 
         if (body.SaleDate == null)
@@ -128,7 +136,7 @@ public class UserController : ControllerBase
         var sale = new Sale
         {
             BuyerId = body.BuyerId,
-            SellerId = body.UserId,
+            SellerId = userId,
             SaleDate = body.SaleDate,
         };
         _context.Sales.Add(sale);
@@ -139,31 +147,31 @@ public class UserController : ControllerBase
 
     [HttpPost("{userId}/buy")]
 
-    public ActionResult<Sale> PostBuyUserId(
-            [FromRoute] int userId,
-            [FromBody] SaleDTO body)
-    {
-        if (_context.Sales.Any(s => s.BuyerId == null || s.SellerId == null))
-        {
-            return NotFound();
-        }
+   // public ActionResult<Sale> PostBuyUserId(
+          //  [FromRoute] int userId,
+           // [FromBody] SaleDTO body)
+    //{
+       // if (_context.Sales.Any(s => s.BuyerId == null || s.SellerId == null))
+      //  {
+            //return NotFound();
+      // }
 
-        if (body.SaleDate == null)
-        {
-            body.SaleDate = DateTime.Now;
-        }
+      //  if (body.SaleDate == null)
+      //  {
+           // body.SaleDate = DateTime.Now;
+      // }
 
-        var buy = new Sale
-        {
-            BuyerId = body.UserId,
-            SellerId = body.SellerId,
-            SaleDate = body.SaleDate,
-        };
+      // var buy = new Sale
+       // {
+          //  BuyerId = body.UserId,
+          //  SellerId = body.SellerId,
+           // SaleDate = body.SaleDate,
+      //  };
 
-        _context.Sales.Add(buy);
-        _context.SaveChanges();
-        return Created("api/user/{userId}/buy", buy.Id);
-    }
+       // _context.Sales.Add(buy);
+       // _context.SaveChanges();
+       // return Created("api/user/{userId}/buy", buy.Id);
+    //}
 
 
     [HttpGet("{userId}/sales")]
