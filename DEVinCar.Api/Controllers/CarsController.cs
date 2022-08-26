@@ -95,7 +95,7 @@ public class CarController : ControllerBase
     public ActionResult<Car> Put([FromBody] CarDTO carDto, [FromRoute] int carId)
     {
         var car = _context.Cars.Find(carId);
-        var name = _context.Cars.Find(carDto.Name);
+
 
         if (car == null)
             return NotFound();
@@ -103,11 +103,14 @@ public class CarController : ControllerBase
             return BadRequest();
         if (carDto.SuggestedPrice <= 0)
             return BadRequest();
-        if (!name.Equals(null))
-            return BadRequest();
 
         car.Name = carDto.Name;
         car.SuggestedPrice = carDto.SuggestedPrice;
+
+        var name = _context.Cars.Any(c => c.Name == carDto.Name && c.Id != carId);
+
+        if (name)
+            return BadRequest();
 
         _context.SaveChanges();
         return NoContent();
