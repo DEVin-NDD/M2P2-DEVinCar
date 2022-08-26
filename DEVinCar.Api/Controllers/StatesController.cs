@@ -134,5 +134,19 @@ public class StatesController : ControllerBase
        
         return Ok(response);
     }
+
+    [HttpGet]
+    public ActionResult<State> Get([FromQuery] string name) {
+
+        var query = _context.States.AsQueryable();
+
+        if(!string.IsNullOrEmpty(name)) {
+            query = query.Where(s => s.Name.ToUpper() == name.ToUpper());
+        }
+        if(query.Any())
+            return Ok(query.ToList());
+
+        return NoContent();
+    }
 }
 
