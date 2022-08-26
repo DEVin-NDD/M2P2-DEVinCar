@@ -61,7 +61,7 @@ public class CarController : ControllerBase
         [FromBody] CarDTO body
     )
     {
-        if (_context.Cars.Any(c => c.Name == body.Name || c.SuggestedPrice <= 0))
+        if (_context.Cars.Any(c => c.Name == body.Name || body.SuggestedPrice <= 0))
         {
             return BadRequest();
         }
