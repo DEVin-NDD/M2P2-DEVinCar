@@ -147,32 +147,39 @@ public class UserController : ControllerBase
 
     [HttpPost("{userId}/buy")]
 
-   // public ActionResult<Sale> PostBuyUserId(
-          //  [FromRoute] int userId,
-           // [FromBody] SaleDTO body)
-    //{
-       // if (_context.Sales.Any(s => s.BuyerId == null || s.SellerId == null))
-      //  {
-            //return NotFound();
-      // }
+   public ActionResult<Sale> PostBuyUserId(
+          [FromRoute] int userId,
+          [FromBody] BuyDTO body)
+    {
 
-      //  if (body.SaleDate == null)
-      //  {
-           // body.SaleDate = DateTime.Now;
-      // }
+        var user = _context.Users.Find(userId);
+        if (user == null)
+        {
+            return NotFound("The user does not exist!");
+        }
 
-      // var buy = new Sale
-       // {
-          //  BuyerId = body.UserId,
-          //  SellerId = body.SellerId,
-           // SaleDate = body.SaleDate,
-      //  };
+        var seller = _context.Users.Find(body.SellerId);
+        if (seller == null)
+        {
+            return NotFound("The user does not exist!");
+        }
+        if (body.SaleDate == null)
+        {
+            body.SaleDate = DateTime.Now;
+        }
 
-       // _context.Sales.Add(buy);
-       // _context.SaveChanges();
-       // return Created("api/user/{userId}/buy", buy.Id);
-    //}
+        var buy = new Sale
+        {
+            BuyerId = userId,
+            SellerId = body.SellerId,
+            SaleDate = body.SaleDate,
+        };
 
+        _context.Sales.Add(buy);
+        _context.SaveChanges();
+        return Created("api/user/{userId}/buy", buy.Id);
+    }
+    
 
     [HttpGet("{userId}/sales")]
     public ActionResult<Sale> GetSalesBySellerId(
