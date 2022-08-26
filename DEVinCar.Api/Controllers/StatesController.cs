@@ -2,7 +2,7 @@
 using DEVinCar.Api.Data;
 using DEVinCar.Api.DTOs;
 using DEVinCar.Api.ViewModels;
-
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DEVinCar.Api.Controllers;
@@ -116,35 +116,47 @@ public class StatesController : ControllerBase
     }
 
     [HttpGet("{stateId}")]
-    public ActionResult<GetStatiByIdViewModel> GetStateById(
+    public ActionResult<GetStateByIdViewModel> GetStateById(
             [FromRoute] int stateId
         )
     {
-        var filterStati = _context.States.Find(stateId);
-        if (filterStati == null)
+        var filterState = _context.States.Find(stateId);
+        if (filterState == null)
         {
             return NotFound("There is no given with this id");
         }
 
-        var response = new GetStatiByIdViewModel(
-            filterStati.Id,
-            filterStati.Name,
-            filterStati.Initials
+        var response = new GetStateByIdViewModel(
+            filterState.Id,
+            filterState.Name,
+            filterState.Initials
             );
        
         return Ok(response);
     }
 
     [HttpGet]
-    public ActionResult<State> Get([FromQuery] string name) {
-
+    public ActionResult<List<GetStateViewModel>> Get([FromQuery] string name) {
         var query = _context.States.AsQueryable();
 
         if(!string.IsNullOrEmpty(name)) {
-            query = query.Where(s => s.Name.ToUpper() == name.ToUpper());
+            query = query.Where(s => s.Name.ToUpper().Contains(name.ToUpper()));
         }
-        if(query.Any())
-            return Ok(query.ToList());
+        if(query.Any()) {
+            List<GetStateViewModel> getStateViewModels = new List<GetStateViewModel>();
+            query
+                .Include(s => s.Cities)
+                .ToList().ForEach(state =>
+                {
+                    GetStateViewModel getState = new GetStateViewModel(state.Id, state.Name, state.Initials);
+                    state.Cities.ForEach(city =>
+                    {
+                        getState.Cities.Add(city.Name);
+                    });
+                    getStateViewModels.Add(getState);
+                });
+            return Ok(getStateViewModels);
+        }
 
         return NoContent();
     }
