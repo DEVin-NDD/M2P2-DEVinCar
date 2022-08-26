@@ -83,44 +83,40 @@ public class SalesController : ControllerBase
 
     [HttpPost("{saleId}/deliver")]
     public ActionResult<Delivery> PostDeliver(
-       [FromRoute] int saleId,
-       [FromQuery] int? addressId,
-       [FromQuery] DateTime? deliveryForecast)
+           [FromRoute] int saleId,
+           [FromBody] DeliveryDTO body)
     {
-        if (!addressId.HasValue)
+        if (!body.AddressId.HasValue)
         {
             return BadRequest();
         }
 
-        var querySales = _context.Sales.FirstOrDefault(a => a.Id == saleId);
-        if (querySales == null)
+        if (_context.Sales.Find(saleId) == null)
         {
             return NotFound();
         }
 
-        var queryDeliveries = _context.Deliveries.FirstOrDefault(a => a.AddressId == addressId);
-
-        if (queryDeliveries == null)
+        if (_context.Sales.Find(body.AddressId) == null)
         {
             return NotFound();
         }
 
         var now = DateTime.Now;
-        if (deliveryForecast < now)
+        if (body.DeliveryForecast < now)
         {
             return BadRequest();
         }
 
-        if (deliveryForecast == null)
+        if (body.DeliveryForecast == null)
         {
-            deliveryForecast = DateTime.Now.AddDays(7);
+            body.DeliveryForecast = DateTime.Now.AddDays(7);
         }
 
         var deliver = new Delivery
         {
-            AddressId = (int)addressId,
+            AddressId = (int)body.AddressId,
             SaleId = saleId,
-            DeliveryForecast = (DateTime)deliveryForecast
+            DeliveryForecast = (DateTime)body.DeliveryForecast
         };
 
         _context.Deliveries.Add(deliver);
