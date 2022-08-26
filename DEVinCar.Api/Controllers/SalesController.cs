@@ -161,16 +161,11 @@ public class SalesController : ControllerBase
 
         try
         {
-
-
             carID.Amount = amount;
-
-
+            carID.Amount = amount;
             _context.SaleCars.Update(carID);
-
             _context.SaveChanges();
             return NoContent();
-
         }
         catch (Exception ex)
         {
@@ -178,4 +173,42 @@ public class SalesController : ControllerBase
         }
 
     }
+
+    [HttpPatch("{saleId}/car/{carId}/price/{unitPrice}")]
+
+    public ActionResult<SaleCar> Patch(
+           [FromRoute] int saleId,
+           [FromRoute] int carId,
+           [FromRoute] decimal unitPrice
+           )
+
+    {
+        var carSaleId = _context.Sales.Find(saleId);
+        var carID = _context.SaleCars.Find(carId);
+
+        if (carSaleId == null || carID == null)
+        {
+            return NotFound();
+        }
+
+        if (carID.UnitPrice <= 0)
+        {
+            return BadRequest();
+        }
+
+        try
+        {
+            carID.UnitPrice = unitPrice;
+            _context.SaleCars.Update(carID);
+            _context.SaveChanges();
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex);
+        }
+
+    }
+
 }
+
