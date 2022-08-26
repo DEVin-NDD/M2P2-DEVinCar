@@ -1,8 +1,9 @@
 ﻿using DEVinCar.Api.Models;
 using DEVinCar.Api.Data;
 using DEVinCar.Api.DTOs;
-
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using DEVinCar.Api.ViewModels;
 
 namespace DEVinCar.Api.Controllers;
 
@@ -19,10 +20,10 @@ public class AddressesController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<Address>> Get([FromQuery] int? cityId,
-                                           [FromQuery] int? stateId,
-                                           [FromQuery] string street,
-                                           [FromQuery] string cep)
+    public ActionResult<List<AddressViewModel>> Get([FromQuery] int? cityId,
+                                                    [FromQuery] int? stateId,
+                                                    [FromQuery] string street,
+                                                    [FromQuery] string cep)
     {
         var query = _context.Addresses.AsQueryable();
 
@@ -51,16 +52,30 @@ public class AddressesController : ControllerBase
             return NoContent();
         }
 
-        return Ok(query.ToList());
+        List<AddressViewModel> addressesViewModel = new List<AddressViewModel>();
+        query
+            .Include(a => a.City)
+            .ToList().ForEach(address => {
+            addressesViewModel.Add(new AddressViewModel(address.Id,
+                                                        address.Street,
+                                                        address.CityId,
+                                                        address.City.Name,
+                                                        address.Number,
+                                                        address.Complement,
+                                                        address.Cep));
+        });
+        return Ok(addressesViewModel);
 
     }
 
     [HttpPatch("{addressId}")]
-    public ActionResult<Address> Patch([FromRoute] int addressId,
+    public ActionResult<AddressViewModel> Patch([FromRoute] int addressId,
                                        [FromBody] AddressPatchDTO addressPatchDTO)
     {
 
-        Address address = _context.Addresses.FirstOrDefault(a => a.Id == addressId);
+        Address address = _context.Addresses
+                                  .Include(a => a.City)
+                                  .FirstOrDefault(a => a.Id == addressId);
 
         if (address == null)
             return NotFound($"The address with ID: {addressId} not found.");
@@ -97,7 +112,16 @@ public class AddressesController : ControllerBase
 
         _context.SaveChanges();
 
-        return address;
+        AddressViewModel addressViewModel = new AddressViewModel(
+            address.Id,
+            address.Street,
+            address.CityId,
+            address.City.Name,
+            address.Number,
+            address.Cep,
+            address.Complement
+        );
+        return Ok(addressViewModel);
     }
 
     [HttpDelete("{addressId}")]
