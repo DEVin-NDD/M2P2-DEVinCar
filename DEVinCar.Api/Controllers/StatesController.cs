@@ -4,6 +4,7 @@ using DEVinCar.Api.DTOs;
 using DEVinCar.Api.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DEVinCar.Api.Controllers;
 
@@ -160,5 +161,68 @@ public class StatesController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("{stateId}/city")]
+    public ActionResult<GetCityByIdViewModel> GetCityByStateId(
+        [FromRoute] int stateId,
+        [FromQuery] string? name
+       )
+    
+    {
+        var state = _context.States.Find(stateId);
+        var cityStates = _context.Cities.Where(c => c.StateId == state.Id);
+        
+        
+        if (state == null)
+            return NotFound("State not found.");
+
+
+        if (!string.IsNullOrEmpty(name))
+        {
+            var cityQuery = cityStates.Where(c => c.Name == name);
+
+            if (cityQuery.Count() == 0)
+            {
+                return NoContent();
+            }
+
+            var queryResponse = cityQuery
+                .Select(c => new GetCityByIdViewModel(
+                    c.Id, 
+                    c.Name, 
+                    c.State.Id, 
+                    c.State.Name, 
+                    c.State.Initials))
+                .ToList();
+
+            return Ok(queryResponse);
+
+        }
+        
+         
+        if (cityStates.Count() == 0)
+        {
+            return NoContent();
+        }
+
+        
+        List<GetCityByIdViewModel> body = new();
+        cityStates.ToList().ForEach(
+            c => {
+                body.Add(new GetCityByIdViewModel(
+                    c.Id,
+                    c.Name,
+                    c.StateId,
+                    c.State.Name,
+                    c.State.Initials
+                    ));
+                                
+            }
+            );
+
+        return Ok(body);
+
+    }
+
 }
 
