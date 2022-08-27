@@ -88,7 +88,7 @@ public class AddressesController : ControllerBase
         {
             if (addressPatchDTO.Street == "")
                 return BadRequest("The street name cannot be empty.");
-            address.Street = addressPatchDTO.Street;
+            address.Street = street;
         }
 
         if (addressPatchDTO.Cep != null)
@@ -97,14 +97,14 @@ public class AddressesController : ControllerBase
                 return BadRequest("The cep cannot be empty.");
             if (!addressPatchDTO.Cep.All(char.IsDigit))
                 return BadRequest("Every characters in cep must be numeric.");
-            address.Cep = addressPatchDTO.Cep;
+            address.Cep = cep;
         }
 
         if (addressPatchDTO.Complement != null)
         {
             if (addressPatchDTO.Complement == "")
                 return BadRequest("The complement cannot be empty.");
-            address.Complement = addressPatchDTO.Complement;
+            address.Complement = complement;
         }
 
         if (addressPatchDTO.Number != 0)
@@ -118,8 +118,8 @@ public class AddressesController : ControllerBase
             address.CityId,
             address.City.Name,
             address.Number,
-            address.Cep,
-            address.Complement
+            address.Complement,
+            address.Cep
         );
         return Ok(addressViewModel);
     }
