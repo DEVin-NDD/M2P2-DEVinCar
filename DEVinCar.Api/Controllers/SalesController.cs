@@ -19,7 +19,8 @@ public class SalesController : ControllerBase
     }
 
     [HttpGet("{saleId}")]
-    public ActionResult<SaleViewModel> GetItensSale([FromRoute] int saleId)
+    public ActionResult<SaleViewModel> GetItensSale(
+        [FromRoute] int saleId)
     {
         var sales = _context.Sales
         .Include(s => s.Cars)
@@ -54,7 +55,6 @@ public class SalesController : ControllerBase
 
         if (_context.Cars.Any(c => c.Id == body.CarId) && _context.Sales.Any(s => s.Id == body.SaleId))
         {
-
             if (body.CarId == 0) return BadRequest();
 
             if (body.UnitPrice <= 0 || body.Amount <= 0) return BadRequest();
@@ -125,35 +125,25 @@ public class SalesController : ControllerBase
         return Created("{saleId}/deliver", deliver.Id);
     }
 
-
-
-
     [HttpPatch("{saleId}/car/{carId}/amount/{amount}")]
-
     public ActionResult<SaleCar> Patch(
             [FromRoute] int saleId,
             [FromRoute] int carId,
             [FromRoute] int amount
             )
-
     {
         var carSaleId = _context.Sales.Find(saleId);
         var carID = _context.SaleCars.Find(carId);
 
-        var saless = _context.SaleCars.FirstOrDefault(s => s.Id == saleId);
-
-
         if (carSaleId == null || carID == null)
         {
             return NotFound();
-
         }
 
         if (amount <= 0)
         {
             return BadRequest();
         }
-
 
         try
         {
@@ -167,17 +157,14 @@ public class SalesController : ControllerBase
         {
             return BadRequest();
         }
-
     }
 
     [HttpPatch("{saleId}/car/{carId}/price/{unitPrice}")]
-
     public ActionResult<SaleCar> Patch(
            [FromRoute] int saleId,
            [FromRoute] int carId,
            [FromRoute] decimal unitPrice
            )
-
     {
         var carSaleId = _context.Sales.Find(saleId);
         var carID = _context.SaleCars.Find(carId);

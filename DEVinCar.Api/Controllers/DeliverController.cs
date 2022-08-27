@@ -12,18 +12,15 @@ namespace DEVinCar.Api.Controllers
     public class DeliverController : ControllerBase
     {
         private readonly DevInCarDbContext _context;
-
         public DeliverController(DevInCarDbContext context)
         {
             _context = context;
         }
 
-
         [HttpGet]
         public ActionResult<Delivery> Get(
         [FromQuery] int? addressId,
-        [FromQuery] int? saleId
-    )
+        [FromQuery] int? saleId)
         {
             var query = _context.Deliveries.AsQueryable();
 
@@ -36,8 +33,7 @@ namespace DEVinCar.Api.Controllers
             {
                 query = query.Where(s => s.SaleId == saleId);
             }
-
-          
+                      
             if (!query.ToList().Any())
             {
                 return NoContent();

@@ -13,11 +13,5 @@
         public Sale()
         {
         }
-        public Sale(int buyerId, int sellerId, DateTime saleDate)
-        {
-            BuyerId = buyerId;
-            SellerId = sellerId;
-            SaleDate = saleDate;
-        }     
     }
 }
