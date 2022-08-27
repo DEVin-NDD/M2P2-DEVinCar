@@ -82,6 +82,8 @@ public class CarController : ControllerBase
             {
                 return BadRequest();
             }
+            _context.Cars.Remove(car);
+            _context.SaveChanges();
             return NoContent();
         }
 }
