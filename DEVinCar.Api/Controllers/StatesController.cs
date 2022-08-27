@@ -179,7 +179,7 @@ public class StatesController : ControllerBase
 
         if (!string.IsNullOrEmpty(name))
         {
-            var cityQuery = cityStates.Where(c => c.Name == name);
+            var cityQuery = cityStates.Where(c => c.Name.ToUpper().Contains(name.ToUpper()));
 
             if (cityQuery.Count() == 0)
             {
