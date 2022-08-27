@@ -17,6 +17,14 @@ public class CarController : ControllerBase
         _context = context;
     }
     
+    [HttpGet("{carId}")]
+    public ActionResult<Car> GetById([FromRoute] int carId)
+    {
+        var car = _context.Cars.Find(carId);
+        if (car == null) return NotFound();
+        return Ok(car);
+    }
+    
     [HttpGet]
     public ActionResult<List<Car>> Get(
         [FromQuery] string name,
@@ -82,8 +90,6 @@ public class CarController : ControllerBase
             {
                 return BadRequest();
             }
-            _context.Cars.Remove(car);
-            _context.SaveChanges();
             return NoContent();
         }
 }
