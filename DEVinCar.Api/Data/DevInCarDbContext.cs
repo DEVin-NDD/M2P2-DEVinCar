@@ -16,7 +16,6 @@ public class DevInCarDbContext : DbContext
     //public DbSet<XYZ> XYZs { get; set; }
 
     public DbSet<City> Cities { get; set; }
-
     public DbSet<User> Users { get; set; }
     public DbSet<Car> Cars { get; set; }
     public DbSet<Sale> Sales { get; set; }
