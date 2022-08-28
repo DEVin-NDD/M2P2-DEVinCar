@@ -126,7 +126,7 @@ public class AddressesController : ControllerBase
 
     [HttpDelete("{addressId}")]
 
-    public ActionResult<Address> DeleteById([FromRoute] int addressId)
+    public ActionResult DeleteById([FromRoute] int addressId)
     {
         Address address = _context.Addresses.Find(addressId);
 

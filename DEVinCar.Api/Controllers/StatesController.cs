@@ -4,7 +4,6 @@ using DEVinCar.Api.DTOs;
 using DEVinCar.Api.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DEVinCar.Api.Controllers;
 
@@ -51,7 +50,7 @@ public class StatesController : ControllerBase
     }
 
     [HttpPost("{stateId}/city/{cityId}/address")]
-    public ActionResult<Address> PostAdress(
+    public ActionResult<int> PostAdress(
         [FromRoute] int stateId,
         [FromRoute] int cityId,
         [FromBody] AdressDTO body)
