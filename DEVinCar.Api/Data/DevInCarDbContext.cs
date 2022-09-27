@@ -1,5 +1,5 @@
 using System.Runtime.Serialization;
-using DEVinCar.Api.Models;
+using DEVinCar.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DEVinCar.Api.Data;

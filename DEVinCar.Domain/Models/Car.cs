@@ -1,4 +1,4 @@
-﻿namespace DEVinCar.Api.Models
+﻿namespace DEVinCar.Domain.Models
 {
     public class Car
     {

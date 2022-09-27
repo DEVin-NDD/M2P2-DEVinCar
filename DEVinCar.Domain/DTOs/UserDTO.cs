@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using DEVinCar.Api.Annotations;
+using DEVinCar.Domain.Annotations;
 
-namespace DEVinCar.Api.DTOs{
+namespace DEVinCar.Domain.DTOs{
     public class UserDTO{
         [Required(ErrorMessage = "The name is required")]
         [MaxLength(255)]

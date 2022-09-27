@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DEVinCar.Api.DTOs {
+namespace DEVinCar.Domain.DTOs {
     public class StateDTO {
         [Required(ErrorMessage ="The Name is required.")]
         [MaxLength(100,ErrorMessage= "State name must be a maximum of 100 characters.")]

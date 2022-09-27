@@ -1,8 +1,7 @@
 using System.Security.AccessControl;
 using System;
-using Microsoft.EntityFrameworkCore;
 
-namespace DEVinCar.Api.Models;
+namespace DEVinCar.Domain.Models;
 public class Delivery
 {
     public int Id { get; internal set; }
