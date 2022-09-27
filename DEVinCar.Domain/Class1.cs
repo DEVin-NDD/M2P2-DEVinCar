@@ -1,7 +1,5 @@
-﻿namespace DEVinCar.Domain
+﻿namespace DEVinCar.Domain;
+public class Class1
 {
-    public class Class1
-    {
 
-    }
 }
