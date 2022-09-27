@@ -1,4 +1,4 @@
-﻿namespace DEVinCar.Domain
+﻿namespace DEVinCar.Infra
 {
     public class Class1
     {
