@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DEVinCar.Api.Controllers;
 
 [ApiController]
-[Route("api/car")]
+[Route("api/cars")]
 public class CarController : ControllerBase
 {
     private readonly DevInCarDbContext _context;

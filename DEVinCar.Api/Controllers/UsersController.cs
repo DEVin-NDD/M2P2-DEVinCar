@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DEVinCar.Api.Controllers;
 
 [ApiController]
-[Route("api/user")]
+[Route("api/users")]
 
 public class UserController : ControllerBase
 {

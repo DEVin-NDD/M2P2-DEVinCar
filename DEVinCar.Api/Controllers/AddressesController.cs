@@ -8,7 +8,7 @@ using DEVinCar.Api.ViewModels;
 namespace DEVinCar.Api.Controllers;
 
 [ApiController]
-[Route("api/address")]
+[Route("api/addresses")]
 
 public class AddressesController : ControllerBase
 {
